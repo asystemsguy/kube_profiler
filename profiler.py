@@ -287,10 +287,10 @@ class endpoint:
 
         def get_load_command(self,total_req,con_req,datafilename):
 
-              loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)+"' -m "+self.method
+              loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)+" -m "+self.method
                       
               if self.header != "":
-                   loadgen_cmd = loadgen_cmd+" -H '"+self.header+" -D fakedata/"+datafilename
+                   loadgen_cmd = loadgen_cmd+" -H '"+self.header+"' -D fakedata/"+datafilename
                         
               loadgen_cmd = loadgen_cmd+" "+self.service.url+self.name 
               return loadgen_cmd

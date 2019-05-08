@@ -18,6 +18,8 @@ class resource:
               keys = np.arange(self.min, self.max, self.interval)
 
               print("## service: ",service.name,"\n")
+
+              self.platform.restart(service)
               
               # Run profiling for each endpoint
               for endpoint in service.endpoints:

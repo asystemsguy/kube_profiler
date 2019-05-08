@@ -7,40 +7,40 @@ class kube:
           config.load_kube_config()
           self.extensions_v1beta1 = client.ExtensionsV1beta1Api()
 
-    def get_deployment(self,service,namespace):
+    def get_deployment(self,service,namespace="default"):
          deployments_list = self.extensions_v1beta1.list_namespaced_deployment(namespace)
          for deployment in deployments_list.items:
               if deployment.metadata.name == service.name:
-                     return deployment
-    
-    def restart_services_deployment(self,service,namespace):
-           subprocess.check_output(["kubectl get deployment "+service.name+" | tail -n +2 | awk '{print $4}'"], shell=True)
+                     return deployment   
+    def restart(self,service,namespace="default"):
+           subprocess.check_output(["kubectl scale --replicas=0 deployment/"+service.name], shell=True)
+           subprocess.check_output(["kubectl scale --replicas=1 deployment/"+service.name], shell=True)
 
-    def get_current_instance_count(self,service,namespace):
+    def get_instance_count(self,service,namespace="default"):
            return float(subprocess.check_output(["kubectl get deployment "+service.name+" | tail -n +2 | awk '{print $4}'"], shell=True))
+
+    def get_current_mem(self,service,namespace="default"):
+
+          deployment = get_deployment(service,namespace)
+          return deployment.spec.template.spec.containers[0].resources.limits['memory']
          
-    def allocate_mem(self,service,mem):
+    def allocate_mem(self,service,mem,namespace="default"):
                    
-           deployment = self.get_deployment(service,"default")
+           deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
            api_response = self.extensions_v1beta1.patch_namespaced_deployment(
               name=service.name,
               namespace="default",
               body=deployment)
 
-    def get_current_mem(self,service):
+    def get_current_cpu(self,service,namespace="default"):
 
-          deployment = get_deployment(service,"default")
-          return deployment.spec.template.spec.containers[0].resources.limits['memory']
+          deployment = get_deployment(service,namespace)
+          return deployment.spec.template.spec.containers[0].resources.limits['cpu']  
 
-    def get_current_cpu(self,service):
-
-          deployment = get_deployment(service,"default")
-          return deployment.spec.template.spec.containers[0].resources.limits['memory']  
-
-    def allocate_cpu(self,service,cpu):
-           deployment = self.get_deployment(service,"default")
-           deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
+    def allocate_cpu(self,service,cpu,namespace="default"):
+           deployment = self.get_deployment(service,namespace)
+           deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
            api_response = self.extensions_v1beta1.patch_namespaced_deployment(
               name=service.name,
               namespace="default",

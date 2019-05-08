@@ -248,11 +248,12 @@ class service:
                self.data.generate_data(file_name)
 
       def wait(self):
-            service_up = 0
+            service_up = -1
             while(service_up != 1):                       
                   time.sleep(3)
                   service_up = float(subprocess.check_output(["kubectl get deployment "+self.name+" | tail -n +2 | awk '{print $4}'"], shell=True))
-                  print("number of available instances of "+self.name+" :"+str(service_up))
+                  if(service_up == 0.0):
+                      print("number of available instances of "+self.name+" :"+str(service_up))
 
             sleep_time = 10
             status_code = 0
@@ -262,8 +263,8 @@ class service:
                   except requests.exceptions.ConnectionError:
                        sleep_time = sleep_time+20
                        time.sleep(sleep_time)
-                       print(status_code)
-      def get_sign():
+                       print("service "+self.name+" responding with code "+status_code+" trying again ...")
+      def get_sign(self):
              return "sev_"+self.name
                  
 class endpoint:
@@ -285,7 +286,7 @@ class endpoint:
               loadgen_cmd = loadgen_cmd+" "+self.service.url+self.name 
               return loadgen_cmd
 
-        def get_sign():
+        def get_sign(self):
               return "_api_"+self.name.replace("/", "_")+"_m_"+self.method
 
 class service_data:

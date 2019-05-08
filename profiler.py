@@ -26,8 +26,12 @@ class kubernetes:
          for deployment in deployments_list.items:
               if deployment.metadata.name == service.name:
                      return deployment
-
-
+    
+    def restart_services_deployment(self,service,namespace):
+           subprocess.check_output(["kubectl get deployment "+service.name+" | tail -n +2 | awk '{print $4}'"], shell=True)
+    def get_current_instance_count(self,service,namespace):
+           return float(subprocess.check_output(["kubectl get deployment "+service.name+" | tail -n +2 | awk '{print $4}'"], shell=True))
+         
     def allocate_mem(self,service,mem):
                    
            deployment = self.get_deployment(service,"default")
@@ -232,16 +236,17 @@ class profiler:
                              target_latency = endpoint_conf['endpoint'][4]['target_latency']
                              endpoints.append(endpoint(endpoint_name,method,headers,target_throughput,target_latency))
                     
-                         self.services.append(service(service_name,port,service_data(schema),endpoints))
+                         self.services.append(service(service_name,port,service_data(schema,self.total_req),endpoints,self.platform))
                 except yaml.YAMLError as exc:
                    print(exc)
 
 class service:
-      def __init__(self,name,port,data,endpoints):
+      def __init__(self,name,port,data,endpoints,platform):
           self.name = name
           self.port = port
           self.data = data
           self.endpoints = endpoints
+          self.platform = platform
           self.url = 'http://'+self.name+':'+str(self.port)
           for endpoint in endpoints:
             endpoint.service = self
@@ -252,6 +257,7 @@ class service:
           except Exception as e:
             print(e)
 
+
       def generate_data(self,file_name):
             if not os.path.isfile("fakedata/"+file_name):
                self.data.generate_data("fakedata/"+file_name)
@@ -260,7 +266,7 @@ class service:
             service_up = -1
             while(service_up != 1):                       
                   time.sleep(3)
-                  service_up = float(subprocess.check_output(["kubectl get deployment "+self.name+" | tail -n +2 | awk '{print $4}'"], shell=True))
+                  service_up = self.platform.get_current_instance_count(self,"default")
                   if(service_up == 0.0):
                       print("number of available instances of "+self.name+" :"+str(service_up))
 
@@ -272,7 +278,7 @@ class service:
                   except requests.exceptions.ConnectionError:
                        sleep_time = sleep_time+20
                        time.sleep(sleep_time)
-                       print("service "+self.name+" responding with code "+status_code+" trying again ...")
+                       print("service "+self.name+" responding with code "+str(status_code)+" trying again ...")
       def get_sign(self):
              return "sev_"+self.name
                  
@@ -299,12 +305,13 @@ class endpoint:
               return "_api_"+self.name.replace("/", "_")+"_m_"+self.method
 
 class service_data:
-       def __init__(self,schema):
+       def __init__(self,schema,total_req):
             self.schema = schema
+            self.total_req = total_req
 
        def generate_data(self,file_name): 
              faker = FakerSchema()
-             data = faker.generate_fake(self.schema, iterations=10000)
+             data = faker.generate_fake(self.schema, iterations=self.total_req)
              with open(file_name, 'w') as f:
                    for item in data:
                        json.dump(item,f)

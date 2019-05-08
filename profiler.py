@@ -82,6 +82,7 @@ class max_conn_requests(resource):
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
                             
+                            service.generate_data(self.__class__.__name__+str(key))
                             loadgen_cmd = endpoint.get_load_command(total_req,key,self.__class__.__name__+str(key))
 
                             # wait for the service to come up
@@ -117,6 +118,7 @@ class memory(resource):
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
                             
+                            service.generate_data(self.__class__.__name__+str(key))
                             loadgen_cmd = endpoint.get_load_command(total_req,endpoint.max_conn_requests,self.__class__.__name__+str(key))
                             
                             # now restart the service
@@ -156,6 +158,7 @@ class cpu(resource):
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
                             
+                            service.generate_data(self.__class__.__name__+str(key))
                             loadgen_cmd = endpoint.get_load_command(total_req,endpoint.max_conn_requests,self.__class__.__name__+str(key))
                             
                             # now restart the service
@@ -238,7 +241,7 @@ class service:
           self.endpoints = endpoints
           self.url = 'http://'+self.name+':'+str(self.port)
           for endpoint in endpoints:
-            endpoint.url = self.url
+            endpoint.service = self
 
       def generate_data(self,file_name):
             if not os.path.isfile(file_name):
@@ -277,9 +280,9 @@ class endpoint:
               loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)
                       
               if self.header != "":
-                   loadgen_cmd = loadgen_cmd+" -H "+self.header+" -m "+self.method+" -D "+datafilename
+                   loadgen_cmd = loadgen_cmd+" -H '"+self.header+"' -m "+self.method+" -D "+datafilename
                         
-              loadgen_cmd = loadgen_cmd+" "+self.url+self.name 
+              loadgen_cmd = loadgen_cmd+" "+self.service.url+self.name 
               return loadgen_cmd
 
         def get_sign():

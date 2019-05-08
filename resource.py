@@ -37,8 +37,11 @@ class resource:
                             self.allocate(endpoint,key)
              
                             # generate load in the service
-                            output = endpoint.gen_load(total_req,endpoint.max_conn_requests,timeout,self.__class__.__name__+str(key))
-
+                            try: 
+                               output = endpoint.gen_load(total_req,endpoint.max_conn_requests,timeout,self.__class__.__name__+str(key))
+                            except Exception as e:
+                               print(e)
+                               break
                             # process the output from load
                             report.process(key,output)                         
                             

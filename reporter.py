@@ -73,8 +73,8 @@ class reporter:
         
           file.write("throughput_values:\n")
           for value,item in zip(self.keys,self.throughput_values):
-              f.write("%s," % value)
-              f.write("%s\n" % item)
+              file.write("%s," % value)
+              file.write("%s\n" % item)
 
    
     def dump_latency_values(self,file):

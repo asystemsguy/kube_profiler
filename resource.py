@@ -21,10 +21,13 @@ class resource:
 
               self.platform.restart(service)
               
+
               # Run profiling for each endpoint
               for endpoint in service.endpoints:
 
                     print("### endpoint: ",endpoint.method," ",endpoint.name,"\n")
+
+                    filename = service.get_sign()+endpoint.get_sign()+"_p_"+self.__class__.__name__
 
                     report = reporter(total_req)
 
@@ -40,6 +43,8 @@ class resource:
                             try: 
                                output = endpoint.gen_load(total_req,endpoint.max_conn_requests,timeout,self.__class__.__name__+str(key))
                             except Exception as e:
+                               # Dump the data fro logging and future use
+                               report.dump_data(filename)
                                print(e)
                                break
                             # process the output from load
@@ -51,7 +56,6 @@ class resource:
                                time.sleep(2)
                     
                     # Dump the data fro logging and future use
-                    filename = service.get_sign()+endpoint.get_sign()+"_p_"+self.__class__.__name__
                     report.dump_data(filename) 
 
                     # finish any required final processing

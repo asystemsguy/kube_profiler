@@ -23,8 +23,7 @@ class reporter:
           except Exception as e:
             print(e)
 
-    def extract_hey_output(self,output): 
-        print(output)      
+    def extract_hey_output(self,output):      
         output_str = output.decode("utf-8") 
         responses = {}
         throughput = 0.0

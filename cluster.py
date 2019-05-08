@@ -23,9 +23,18 @@ class service:
             print(e)
 
 
-      def generate_data(self,file_name):
+      def generate_fake_data(self,file_name):
             if not os.path.isfile("fakedata/"+file_name):
                self.data.generate_data("fakedata/"+file_name)
+
+      def delete_fake_data(self):
+            if os.path.isfile("fakedata"):
+                  try:
+                    os.rmdir("fakedata")
+                  except FileExistsError as e:
+                     pass
+                  except Exception as e:
+                    print(e)
 
       def wait(self):
             service_up = -1
@@ -69,7 +78,7 @@ class endpoint:
         def gen_load(self,total_req,con_req,datafilename):
 
              if self.header != "":
-                 self.service.generate_data(datafilename)
+                 self.service.generate_fake_data(datafilename)
 
              loadgen_cmd = self.get_load_command(total_req,con_req,datafilename)
 

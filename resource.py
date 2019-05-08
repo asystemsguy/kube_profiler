@@ -54,6 +54,8 @@ class resource:
 
                     # finish any required final processing
                     self.finally_do(endpoint,report)
+
+                service.delete_fake_data()
                         
                         
      def allocate(self,service,value):
@@ -70,7 +72,7 @@ class max_conn_requests(resource):
              endpoint.max_conn_requests = value
 
        def finally_do(self,endpoint,report):
-             endpoint.max_conn_requests = report.get_value_for_maxthroughput()
+             endpoint.max_conn_requests = report.get_maxthroughput()
 
 
 class memory(resource):

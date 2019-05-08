@@ -35,9 +35,6 @@ class resource:
                                                
                             # allocate a resource in this iteration and restart the service                    
                             self.allocate(endpoint,key)
-                            
-                            # wait for the service to come up
-                            service.wait()
              
                             # generate load in the service
                             output = endpoint.gen_load(total_req,endpoint.max_conn_requests,timeout,self.__class__.__name__+str(key))

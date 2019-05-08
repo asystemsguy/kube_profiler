@@ -80,9 +80,12 @@ class endpoint:
              if self.header != "":
                  self.service.generate_fake_data(datafilename)
 
-             loadgen_cmd = self.get_load_command(total_req,con_req,timeout,datafilename)
+              # wait for the service to come up
+              self.service.wait()
 
-             return subprocess.check_output([loadgen_cmd], shell=True,timeout=timeout) 
+              loadgen_cmd = self.get_load_command(total_req,con_req,timeout,datafilename)
+
+              return subprocess.check_output([loadgen_cmd], shell=True,timeout=timeout) 
 
         def get_sign(self):
               return "_api_"+self.name.replace("/", "_")+"_m_"+self.method

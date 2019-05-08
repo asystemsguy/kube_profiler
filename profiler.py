@@ -72,12 +72,13 @@ class max_conn_requests(resource):
            resource.__init__(self,min_res,max_res,interval,platform)
 
        def profile(self,service,total_req):
-              print("profiling for max concurrent requests\n")
+              print("# profiling for max concurrent requests\n")
               keys= range(self.min,self.max,self.interval)
               limits = []
 
+              print("## service: ",service.name,"\n")
               for endpoint in service.endpoints:
-
+                    print("### endpoint: ",endpoint.name,"\n")
                     report = reporter(total_req)
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
@@ -388,9 +389,9 @@ class reporter:
                     index = throughput_values.index(max(throughput_values))
                     throughput_values.remove(throughput_values[index])
                     errors.remove(errors[index])
-                    values.remove(values[index])
+                    keys.remove(keys[index])
              if len(throughput_values) != 0:     
-                 return values[throughput_values.index(max(throughput_values))]
+                 return keys[throughput_values.index(max(throughput_values))]
              return 0   
    
 

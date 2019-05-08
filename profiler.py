@@ -78,7 +78,7 @@ class max_conn_requests(resource):
 
               print("## service: ",service.name,"\n")
               for endpoint in service.endpoints:
-                    print("### endpoint: ",endpoint.name,"\n")
+                    print("### endpoint: ",endpoint.method," ",endpoint.name,"\n")
                     report = reporter(total_req)
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
@@ -113,8 +113,9 @@ class memory(resource):
               keys= range(self.min,self.max,self.interval)
               limits = []
 
+              print("## service: ",service.name,"\n")
               for endpoint in service.endpoints:
-
+                     print("### endpoint: ",endpoint.method," ",endpoint.name,"\n")
                     report = reporter(total_req)
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
@@ -152,9 +153,10 @@ class cpu(resource):
               print("profiling for cpu limit\n")
               keys= range(self.min,self.max,self.interval)
               limits = []
-
+              
+              print("## service: ",service.name,"\n")
               for endpoint in service.endpoints:
-
+                     print("### endpoint: ",endpoint.method," ",endpoint.name,"\n")
                     report = reporter(total_req)
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
@@ -245,6 +247,8 @@ class service:
             endpoint.service = self
           try:
             os.mkdir("fakedata")
+          except FileExistsError as e:
+             pass
           except Exception as e:
             print(e)
 

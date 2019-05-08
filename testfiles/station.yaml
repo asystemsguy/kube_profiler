@@ -36,11 +36,11 @@ services:
              - target_throughput: 300
              - target_latency: 0.5
         - endpoint:
-            - method: 'GET'
-            - name: '/station/query'
-            - header: ""
-            - target_throughput: 300
-            - target_latency: 0.5   
+             - method: 'GET'
+             - name: '/station/query'
+             - header: ""
+             - target_throughput: 300
+             - target_latency: 0.5   
         - endpoint:
              - method: 'POST'
              - name: '/station/delete'

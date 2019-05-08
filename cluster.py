@@ -65,9 +65,9 @@ class endpoint:
             self.target_latency = target_latency
             self.max_conn_requests = 0
 
-        def get_load_command(self,total_req,con_req,datafilename):
+        def get_load_command(self,total_req,con_req,timeout,datafilename):
 
-              loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)+" -m "+self.method
+              loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)+" -t "+str(timeout)+" -m "+self.method
                       
               if self.header != "":
                    loadgen_cmd = loadgen_cmd+" -H '"+self.header+"' -D fakedata/"+datafilename
@@ -75,12 +75,12 @@ class endpoint:
               loadgen_cmd = loadgen_cmd+" "+self.service.url+self.name 
               return loadgen_cmd
 
-        def gen_load(self,total_req,con_req,datafilename):
+        def gen_load(self,total_req,con_req,timeout,datafilename):
 
              if self.header != "":
                  self.service.generate_fake_data(datafilename)
 
-             loadgen_cmd = self.get_load_command(total_req,con_req,datafilename)
+             loadgen_cmd = self.get_load_command(total_req,con_req,timeout,datafilename)
 
              return subprocess.check_output([loadgen_cmd], shell=True) 
 

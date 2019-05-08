@@ -318,6 +318,8 @@ class reporter:
             os.mkdir("output")
             os.mkdir("output/data")
             os.mkdir("output/graphs")
+          except FileExistsError as e:
+             pass
           except Exception as e:
             print(e)
 

@@ -1,13 +1,13 @@
-total_req: 10000
+total_req: 1000
 resources:
    conn_reqs:        
         min: 1
-        interval: 100
+        interval: 200
         max: 1000
    cpu:
         max: 2
         min: 0.1
-        interval: 0.1
+        interval: 0.4
    mem:
         max: 6000
         min: 1000
@@ -34,12 +34,12 @@ services:
              - header: 'Content-Type: application/json'
              - target_throughput: 300
              - target_latency: 0.5
-        - endpoint:
-             - method: 'GET'
-             - name: '/station/query'
-             - header: ""
-             - target_throughput: 300
-             - target_latency: 0.5   
+      #  - endpoint:
+       #      - method: 'GET'
+        #     - name: '/station/query'
+         #    - header: ""
+          #   - target_throughput: 300
+           #  - target_latency: 0.5   
         - endpoint:
              - method: 'POST'
              - name: '/station/delete'

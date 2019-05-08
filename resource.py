@@ -55,7 +55,7 @@ class resource:
                     # finish any required final processing
                     self.finally_do(endpoint,report)
 
-                service.delete_fake_data()
+              service.delete_fake_data()
                         
                         
      def allocate(self,service,value):

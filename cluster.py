@@ -1,7 +1,8 @@
-import json
 import os
-import requests
+import json
 import time
+import requests
+import subprocess
 from faker_schema.faker_schema import FakerSchema
 
 class service:
@@ -73,7 +74,7 @@ class endpoint:
              loadgen_cmd = self.get_load_command(total_req,con_req,datafilename)
 
              return subprocess.check_output([loadgen_cmd], shell=True) 
-             
+
         def get_sign(self):
               return "_api_"+self.name.replace("/", "_")+"_m_"+self.method
 

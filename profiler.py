@@ -286,7 +286,7 @@ class endpoint:
               loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)
                       
               if self.header != "":
-                   loadgen_cmd = loadgen_cmd+" -H '"+self.header+"' -m "+self.method+" -D "+datafilename
+                   loadgen_cmd = loadgen_cmd+" -H '"+self.header+"' -m "+self.method+" -D fakedata/"+datafilename
                         
               loadgen_cmd = loadgen_cmd+" "+self.service.url+self.name 
               return loadgen_cmd

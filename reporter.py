@@ -71,7 +71,7 @@ class reporter:
 
     def dump_throughput_values(self,filename,tag):
         try:
-            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w') as f:
+            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as f:
                 f.write(tag+":\n")
                 for value,item in zip(self.keys,self.throughput_values):
                     f.write("%s," % value)
@@ -81,7 +81,7 @@ class reporter:
    
     def dump_latency_values(self,filename,tag):
         try:
-            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w') as f:
+            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as f:
                 f.write(tag+":\n")
                 for value,item in zip(self.keys,self.latency_values):
                     f.write("%s," % value)
@@ -92,7 +92,7 @@ class reporter:
     def dump_errors(self,filename,tag):
 
         try:
-            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w') as f:
+            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as f:
                 f.write(tag+":\n")
                 for value,item in zip(self.keys,self.errors):
                     f.write("%s," % value)

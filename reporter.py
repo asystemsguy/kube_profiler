@@ -95,9 +95,9 @@ class reporter:
     def dump_data(self,filename):
         try:
             with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as file:
-              self.dump_throughput_values(file,"throughput_values")
-              self.dump_latency_values(file,"latency_values")
-              self.dump_errors(file,"errors")
+              self.dump_throughput_values(file)
+              self.dump_latency_values(file)
+              self.dump_errors(file)
         except Exception as e:
             print(e)
 

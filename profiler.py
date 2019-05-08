@@ -311,8 +311,9 @@ class reporter:
           self.slos_dict = {}
           self.keys = []
           self.total_req = total_req
-          os.mkdir("data")
-          os.mkdir("data")
+          os.mkdir("output")
+          os.mkdir("output/data")
+          os.mkdir("output/graphs")
 
     def extract_hey_output(self,output):       
         output_str = output.decode("utf-8") 
@@ -344,24 +345,24 @@ class reporter:
             plt.plot(self.keys, self.throughput_values)
             plt.xlabel('number of concurrent requests')
             plt.ylabel('throughput (req/sec)')
-            plt.savefig("data/graph_"+filename+'_throughput.pdf')
+            plt.savefig("output/graphs/graph_"+filename+'_throughput.pdf')
        
             plt.plot(self.keys, self.latency_values)
             plt.xlabel('number of concurrent requests')
             plt.ylabel('latency (secs)')
-            plt.savefig("data/graph_"+filename+'_latency.pdf')
+            plt.savefig("output/graphs/graph_"+filename+'_latency.pdf')
 
             plt.plot(self.keys, self.errors)
             plt.xlabel('number of concurrent requests')
             plt.ylabel('number of non-200 requests')
-            plt.savefig("data/graph_"+filename+'_errors.pdf')
+            plt.savefig("output/graphs/graph_"+filename+'_errors.pdf')
         except Exception as e:
             print(e)
         return True
 
     def dump_data(self,filename):
         try:
-         with open('data/data_'+filename+'.txt', 'w') as f:
+         with open('output/data/data_'+filename+'.txt', 'w') as f:
             f.write("throughput:\n")
             for value,item in zip(self.keys,self.throughput_values):
                 f.write("%s," % value)

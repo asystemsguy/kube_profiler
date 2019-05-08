@@ -69,41 +69,37 @@ class reporter:
             print(e)
         return True
 
-    def dump_throughput_values(self,filename,tag):
-        try:
-            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as f:
-                f.write(tag+":\n")
-                for value,item in zip(self.keys,self.throughput_values):
-                    f.write("%s," % value)
-                    f.write("%s\n" % item)
-        except Exception as e:
-            print(e)
-   
-    def dump_latency_values(self,filename,tag):
-        try:
-            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as f:
-                f.write(tag+":\n")
-                for value,item in zip(self.keys,self.latency_values):
-                    f.write("%s," % value)
-                    f.write("%s\n" % item)
-        except Exception as e:
-            print(e)
-   
-    def dump_errors(self,filename,tag):
+    def dump_throughput_values(self,file):
+        
+          file.write("throughput_values:\n")
+          for value,item in zip(self.keys,self.throughput_values):
+              f.write("%s," % value)
+              f.write("%s\n" % item)
 
-        try:
-            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as f:
-                f.write(tag+":\n")
-                for value,item in zip(self.keys,self.errors):
-                    f.write("%s," % value)
-                    f.write("%s\n" % item)
-        except Exception as e:
-            print(e)          
+   
+    def dump_latency_values(self,file):
+       
+          file.write("latency_values:\n")
+          for value,item in zip(self.keys,self.latency_values):
+              file.write("%s," % value)
+              file.write("%s\n" % item)
+
+    def dump_errors(self,file):
+
+          file.write("errors:\n")
+          for value,item in zip(self.keys,self.errors):
+              file.write("%s," % value)
+              file.write("%s\n" % item)
+        
 
     def dump_data(self,filename):
-        self.dump_throughput_values(filename,"throughput_values")
-        self.dump_latency_values(filename,"latency_values")
-        self.dump_errors(filename,"errors")
+        try:
+            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as file:
+              self.dump_throughput_values(file,"throughput_values")
+              self.dump_latency_values(file,"latency_values")
+              self.dump_errors(file,"errors")
+        except Exception as e:
+            print(e)
 
     # get the resource for target throughput and response time
     def get_value_for_target(self,target_through,target_resp):

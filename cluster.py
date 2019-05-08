@@ -40,7 +40,7 @@ class service:
             service_up = -1
             while(service_up != 1):                       
                   time.sleep(3)
-                  service_up = self.platform.get_current_instance_count(self,"default")
+                  service_up = self.platform.get_instance_count(self,"default")
                   if(service_up == 0.0):
                       print("number of available instances of "+self.name+" :"+str(service_up))
 

@@ -72,7 +72,7 @@ class max_conn_requests(resource):
            resource.__init__(self,min_res,max_res,interval,platform)
 
        def profile(self,service,total_req):
-
+              print("profiling for max concurrent requests\n")
               keys= range(self.min,self.max,self.interval)
               limits = []
 
@@ -108,7 +108,7 @@ class memory(resource):
              platform.allocate_mem(service,value)
 
        def profile(self,service,total_req):
-
+              print("profiling for memory limit\n")
               keys= range(self.min,self.max,self.interval)
               limits = []
 
@@ -148,7 +148,7 @@ class cpu(resource):
              platform.allocate_cpu(service,value)
 
         def profile(self,service,total_req):
-
+              print("profiling for cpu limit\n")
               keys= range(self.min,self.max,self.interval)
               limits = []
 
@@ -380,7 +380,7 @@ class reporter:
                 if throughput_values[index] >= target_through and latency_values[index] <= target_resp and errors[index]==0 :
                     return keys[index]
     
-    def get_value_for_maxthroughput():
+    def get_value_for_maxthroughput(self):
              throughput_values = self.throughput_values
              errors = self.errors
              keys = self.keys

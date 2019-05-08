@@ -77,7 +77,7 @@ class endpoint:
 
         def gen_load(self,total_req,con_req,timeout,datafilename):
 
-             if self.header != "":
+              if self.header != "":
                  self.service.generate_fake_data(datafilename)
 
               # wait for the service to come up

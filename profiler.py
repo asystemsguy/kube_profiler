@@ -4,71 +4,309 @@ import os
 import struct
 import signal
 import sys
+import json
+import requests
+import yaml
 import matplotlib.pyplot as plt
+import numpy as np
+from kubernetes import client, config
+from faker_schema.faker_schema import FakerSchema
+from os import path
 from tqdm import tqdm
 from random import randint
-import numpy as np
-from os import path
-import yaml
-from kubernetes import client, config
-import requests
-from faker_schema.faker_schema import FakerSchema
-import json
+
+class kubernetes:
+
+    def __init__(self):
+          config.load_kube_config()
+          self.extensions_v1beta1 = client.ExtensionsV1beta1Api()
+
+    def get_deployment(self,service,namespace):
+         deployments_list = self.extensions_v1beta1.list_namespaced_deployment(namespace)
+         for deployment in deployments_list.items:
+              if deployment.metadata.name == service.name:
+                     return deployment
+
+
+    def allocate_mem(self,service,mem):
+                   
+           deployment = self.get_deployment(service,"default")
+           deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
+           api_response = self.extensions_v1beta1.patch_namespaced_deployment(
+              name=service.name,
+              namespace="default",
+              body=deployment)
+
+    def get_current_mem(self,service):
+
+          deployment = get_deployment(service,"default")
+          return deployment.spec.template.spec.containers[0].resources.limits['memory']
+
+    def get_current_cpu(self,service):
+
+          deployment = get_deployment(service,"default")
+          return deployment.spec.template.spec.containers[0].resources.limits['memory']  
+
+    def allocate_cpu(self,service,cpu):
+           deployment = self.get_deployment(service,"default")
+           deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
+           api_response = self.extensions_v1beta1.patch_namespaced_deployment(
+              name=service.name,
+              namespace="default",
+              body=deployment)
+
+class resource:
+     def __init__(self,min_res,max_res,interval,platform):
+        self.min = min_res
+        self.max = max_res
+        self.interval = interval
+        self.platform = platform
+     def profile(self):
+        print("profling is not implemented for this resource")
+
+     def allocate(self):
+        print("allocate resource is not implemented for this resource")
+
+class max_conn_requests(resource):
+       def __init__(self,min_res,max_res,interval,platform):
+           resource.__init__(self,min_res,max_res,interval,platform)
+
+       def profile(self,service,total_req):
+
+              keys= range(self.min,self.max,self.interval)
+              limits = []
+
+              for endpoint in service.endpoints:
+
+                    report = reporter(total_req)
+                    # run the stress and simulated process co-located for different array sizes
+                    for key in tqdm(keys):        
+                            
+                            loadgen_cmd = endpoint.get_load_command(total_req,key,self.__class__.__name__+str(key))
+
+                            # wait for the service to come up
+                            service.wait()
+
+                            #execute the load on the service
+                            output = subprocess.check_output([loadgen_cmd], shell=True) 
+                            reporter.process(key,output)                         
+                            time.sleep(5)
+                    
+                    filename = service.get_sign()+endpoint.get_sign()+"_p_"+self.__class__.__name__+"_t_"+time.strftime("%Y%m%d-%H%M%S")
+                    endpoint.max_conn_requests = reporter.get_value_for_maxthroughput()
+                    reporter.dump_data(filename) 
+                    #limits.append(reporter.get_value_for_target(keys,target_through,target_resp))
+            #   return limits
+
+class memory(resource):
+       def __init__(self,min_res,max_res,interval,platform):
+           resource.__init__(self,min_res,max_res,interval,platform)
+
+       def allocate(self,service,value):    
+     
+             platform.allocate_mem(service,value)
+
+       def profile(self,service,total_req):
+
+              keys= range(self.min,self.max,self.interval)
+              limits = []
+
+              for endpoint in service.endpoints:
+
+                    reporter = reporter(total_req)
+                    # run the stress and simulated process co-located for different array sizes
+                    for key in tqdm(keys):        
+                            
+                            loadgen_cmd = endpoint.get_load_command(total_req,endpoint.max_conn_requests,self.__class__.__name__+str(key))
+                            
+                            # now restart the service
+                            self.allocate(service,key)
+
+                            # wait for the service to come up
+                            service.wait()
+
+                            #execute the load on the service
+                            output = subprocess.check_output([loadgen_cmd], shell=True) 
+                            reporter.process(key,output)                         
+                            time.sleep(5)
+                    
+                    filename = service.get_sign()+endpoint.get_sign()+"_p_"+self.__class__.__name__+"_t_"+time.strftime("%Y%m%d-%H%M%S")
+                    reporter.dump_data(filename) 
+                    limits.append(reporter.get_value_for_target(keys,target_through,target_resp))
+
+              #  return limits
+
+class cpu(resource):
+    
+        def __init__(self,min_res,max_res,interval,platform):
+            resource.__init__(self,min_res,max_res,interval,platform)
+
+        def allocate(self,service,value):
+
+             platform.allocate_cpu(service,value)
+
+        def profile(self,service,total_req):
+
+              keys= range(self.min,self.max,self.interval)
+              limits = []
+
+              for endpoint in service.endpoints:
+
+                    reporter = reporter(total_req)
+                    # run the stress and simulated process co-located for different array sizes
+                    for key in tqdm(keys):        
+                            
+                            loadgen_cmd = endpoint.get_load_command(total_req,endpoint.max_conn_requests,self.__class__.__name__+str(key))
+                            
+                            # now restart the service
+                            self.allocate(service,key)
+
+                            # wait for the service to come up
+                            service.wait()
+
+                            #execute the load on the service
+                            output = subprocess.check_output([loadgen_cmd], shell=True) 
+                            reporter.process(key,output)                         
+                            time.sleep(5)
+                    
+                    filename = service.get_sign()+endpoint.get_sign()+"_p_"+self.__class__.__name__+"_t_"+time.strftime("%Y%m%d-%H%M%S")
+                    reporter.dump_data(filename) 
+                    limits.append(reporter.get_value_for_target(keys,target_through,target_resp))
+
+             #   return limits
 
 class profiler:
-    def generate_data_from_schema(self,schema,file_name): 
+       def __init__(self):
+             self.services = []
+             self.resources = []
+             self.total_req = 0
+             self.platform = kubernetes()
+
+       def run(self):
+            for service in self.services:
+              for resource in self.resources:
+                    resource.profile(service,self.total_req)
+
+       def load_config(self,filename):
+
+              with open(filename, 'r') as stream:
+                try:
+                    config = yaml.safe_load(stream)
+
+                    self.total_req = config['total_req']
+                      
+                    min_value = config['resources']['conn_reqs']['min']
+                    max_value = config['resources']['conn_reqs']['max']
+                    interval_value = config['resources']['conn_reqs']['interval']
+                    self.resources.append(max_conn_requests(min_value,max_value,interval_value,self.platform))
+
+                    min_value = config['resources']['cpu']['min']
+                    max_value = config['resources']['cpu']['max']
+                    interval_value = config['resources']['cpu']['interval']
+                    self.resources.append(cpu(min_value,max_value,interval_value,self.platform))
+                    
+                    min_value = config['resources']['mem']['min']
+                    max_value = config['resources']['mem']['max']
+                    interval_value = config['resources']['mem']['interval']
+                    self.resources.append(memory(min_value,max_value,interval_value,self.platform))
+
+                  
+                    for service_conf in config['services']:
+                         
+                         service_name = service_conf['service']['name']
+                         port = service_conf['service']['port']
+                         schema = service_conf['service']['data'][0]['type']
+
+                         endpoints = []
+                         for endpoint_conf in service_conf['service']['endpoints']:
+                             method = endpoint_conf['endpoint'][0]['method']
+                             endpoint_name = endpoint_conf['endpoint'][1]['name']
+                             headers = endpoint_conf['endpoint'][2]['header']
+                             target_throughput = endpoint_conf['endpoint'][3]['target_throughput']
+                             target_latency = endpoint_conf['endpoint'][4]['target_latency']
+                             endpoints.append(endpoint(endpoint_name,method,headers,target_throughput,target_latency))
+                    
+                         self.services.append(service(service_name,port,service_data(schema),endpoints))
+                except yaml.YAMLError as exc:
+                   print(exc)
+
+class service:
+      def __init__(self,name,port,data,endpoints):
+          self.name = name
+          self.port = port
+          self.data = data
+          self.endpoints = endpoints
+          self.url = 'http://'+self.name+':'+str(self.port)
+          for endpoint in endpoints:
+            endpoint.url = self.url
+
+      def generate_data(self,file_name):
+            if not os.path.isfile(file_name):
+               self.data.generate_data_from_schema(file_name)
+
+      def wait(self):
+            service_up = 0
+            while(service_up != 1):                       
+                  time.sleep(3)
+                  service_up = float(subprocess.check_output(["kubectl get deployment "+self.name+" | tail -n +2 | awk '{print $4}'"], shell=True))
+                  print("status of "+self.name+" "+service_up)
+
+            sleep_time = 10
+            status_code = 0
+            while(status_code != 200):      
+                  try:
+                      status_code = requests.get(self.url+"/welcome",timeout=None).status_code
+                  except requests.exceptions.ConnectionError:
+                       sleep_time = sleep_time+20
+                       time.sleep(sleep_time)
+                       print(status_code)
+      def get_sign():
+             return "sev_"+self.name
+                 
+class endpoint:
+        def __init__(self,name,method,header,target_throughput,target_latency):
+            self.name = name
+            self.method = method
+            self.header = header
+            self.target_throughput = target_throughput
+            self.target_latency = target_latency
+            self.max_conn_requests = 0
+
+        def get_load_command(self,total_req,con_req,datafilename):
+
+              loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)
+                      
+              if self.header != "":
+                   loadgen_cmd = loadgen_cmd+" -H "+self.header+" -m "+self.method+" -D "+datafilename
+                        
+              loadgen_cmd = loadgen_cmd+" "+self.url+self.name 
+              return loadgen_cmd
+
+        def get_sign():
+              return "_api_"+self.name.replace("/", "_")+"_m_"+self.method
+
+class service_data:
+       def __init__(self,schema):
+            self.schema = schema
+
+       def generate_data(self,file_name): 
              faker = FakerSchema()
-             data = faker.generate_fake(schema, iterations=10000)
+             data = faker.generate_fake(self.schema, iterations=10000)
              with open(file_name, 'w') as f:
                    for item in data:
                        json.dump(item,f)
                        f.write('\n') 
-    def allocate_cpu(self,service,cpus):
+                 
+class reporter:
+    def __init__(self,total_req):
+          self.throughput_values = []
+          self.latency_values = []
+          self.errors=[]
+          self.slos_dict = {}
+          self.keys = []
+          self.total_req = total_req
 
-            config.load_kube_config()
-            extensions_v1beta1 = client.ExtensionsV1beta1Api()
-
-            deployments_list = extensions_v1beta1.list_namespaced_deployment("default")
-            
-            for deployment in deployments_list.items:
-                if deployment.metadata.name == service:
-
-                   print(deployment.spec.template.spec.containers[0].resources.limits)
-
-                   deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpus
-                   api_response = extensions_v1beta1.patch_namespaced_deployment(
-                      name=service,
-                      namespace="default",
-                      body=deployment)
-                deployments_list = extensions_v1beta1.list_namespaced_deployment("default")
-
-            for deployment in deployments_list.items:
-                if deployment.metadata.name == service:
-                   print(deployment.spec.template.spec.containers[0].resources.limits)   
-
-
-    def allocate_mem(self,service,mem):    
-     
-            config.load_kube_config()
-            extensions_v1beta1 = client.ExtensionsV1beta1Api()
-
-            deployments_list = extensions_v1beta1.list_namespaced_deployment("default")
-            
-            for deployment in deployments_list.items:
-                if deployment.metadata.name == service:
-                   print("existing memory limits ",deployment.spec.template.spec.containers[0].resources.limits['memory'])
-                   deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
-                   api_response = extensions_v1beta1.patch_namespaced_deployment(
-                      name=service,
-                      namespace="default",
-                      body=deployment)
-                deployments_list = extensions_v1beta1.list_namespaced_deployment("default")
-
-            for deployment in deployments_list.items:
-                if deployment.metadata.name == service:
-                   print("new memory limits ",deployment.spec.template.spec.containers[0].resources.limits['memory'])     
-       
-    def extract_slo(self,output):
+    def extract_hey_output(self,output):       
         output_str = output.decode("utf-8") 
         responses = {}
         throughput = 0.0
@@ -82,223 +320,73 @@ class profiler:
                 responses.setdefault(item.split()[0], []).append(float(item.split()[1]))
         return [throughput,latency,responses]
 
-    def reporter(self,filename,throughput_values,latency_values,errors,values):
+    def process(self,key,output):
+
+          self.slos_dict[key] = self.extract_hey_output(output)  
+          self.throughput_values.append(self.slos_dict[key][0])
+          self.latency_values.append(self.slos_dict[key][1])
+          self.keys.append(key)
+          if '[200]' in self.slos_dict[key][2]:
+              self.errors.append(self.total_req-self.slos_dict[key][2]['[200]'][0])
+          else:
+              self.errors.append(self.total_req)
+
+    def plot_data(self,filename):
         try:
-         with open('data/data_'+filename+'.txt', 'w') as f:
-            f.write("throughput:\n")
-            for value,item in zip(values,throughput_values):
-                f.write("%s," % value)
-                f.write("%s\n" % item)
-            f.write("latency:\n")
-            for value,item in zip(values,latency_values):
-                f.write("%s," % value)
-                f.write("%s\n" % item)
-            f.write("errors:\n")
-            for value,item in zip(values,errors):
-                f.write("%s," % value)
-                f.write("%s\n" % item)
-            plt.plot(values, throughput_values)
+            plt.plot(self.keys, self.throughput_values)
             plt.xlabel('number of concurrent requests')
             plt.ylabel('throughput (req/sec)')
             plt.savefig("data/graph_"+filename+'_throughput.pdf')
        
-            plt.plot(values, latency_values)
+            plt.plot(self.keys, self.latency_values)
             plt.xlabel('number of concurrent requests')
             plt.ylabel('latency (secs)')
             plt.savefig("data/graph_"+filename+'_latency.pdf')
 
-            plt.plot(values, errors)
+            plt.plot(self.keys, self.errors)
             plt.xlabel('number of concurrent requests')
             plt.ylabel('number of non-200 requests')
             plt.savefig("data/graph_"+filename+'_errors.pdf')
         except Exception as e:
             print(e)
         return True
-    def get_conn_req_max_throughput(self,throughput_values,errors,values):
-         while len(throughput_values) != 0 and errors[throughput_values.index(max(throughput_values))] < 100:
-                index = throughput_values.index(max(throughput_values))
-                throughput_values.remove(throughput_values[index])
-                errors.remove(errors[index])
-                values.remove(values[index])
-         if len(throughput_values) != 0:     
-             return values[throughput_values.index(max(throughput_values))]
-         return 0
-    def get_res_for_target(self,throughput_values,errors,latency_values,values,target_through,target_resp):
+
+    def dump_data(self,filename):
+        try:
+         with open('data/data_'+filename+'.txt', 'w') as f:
+            f.write("throughput:\n")
+            for value,item in zip(self.keys,self.throughput_values):
+                f.write("%s," % value)
+                f.write("%s\n" % item)
+            f.write("latency:\n")
+            for value,item in zip(self.keys,self.latency_values):
+                f.write("%s," % value)
+                f.write("%s\n" % item)
+            f.write("errors:\n")
+            for value,item in zip(self.keys,self.errors):
+                f.write("%s," % value)
+                f.write("%s\n" % item)           
+        except Exception as e:
+            print(e)
+        return True
+
+
+    def get_value_for_target(self,target_through,target_resp):
           for index in range(0, len(throughput_values)):
                 if throughput_values[index] >= target_through and latency_values[index] <= target_resp and errors[index]==0 :
-                    return values[index]
-                 
-    def profile_max_throughput(self,headers_str,method,service,port,API,data,total_req):
-
-        slos_dict = {}
-        throughput_values = []
-        latency_values = []
-        errors = []
-        
-        num_requests=[10,30,50,70,100,200,300,400,500,600,700,800,1000,1100,1200,1300,1400,1500]
-
-        # allocate the docker container maximum possible resources
-        self.allocate_cpu(service,"2")
-        time.sleep(5)
-        self.allocate_mem(service,"16G")
-        time.sleep(5)
-       
-        url = 'http://'+service+':'+str(port)
-        while(float(subprocess.check_output(["kubectl get deployment ts-station-service | tail -n +2 | awk '{print $4}'"], shell=True)) != 1):
-                time.sleep(3)
-                print(float(subprocess.check_output(["kubectl get deployment ts-station-service | tail -n +2 | awk '{print $4}'"], shell=True)))
-                status_code = 0
-        status_code = 0
-        sleep_time = 0
-        while(status_code != 200):
-
-                try:
-                     status_code = requests.get(url+"/welcome",timeout=None).status_code
-                except requests.exceptions.ConnectionError:
-                     sleep_time = sleep_time+20
-                     time.sleep(sleep_time)
-                     print(status_code)
-
-        # run the stress and simulated process co-located for different array sizes
-        for con_req in tqdm(num_requests):        
-                loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)
-                
-                if headers_str != "":
-                      
-                    data_filename = 'datafake/throughput_'+str(con_req)+'txt'
-                    if not os.path.isfile(data_filename):                
-                        self.generate_data_from_schema(data,data_filename)
-                    loadgen_cmd = loadgen_cmd+" "+headers_str+" -m "+method+" -D "+data_filename
-                
-                loadgen_cmd = loadgen_cmd+" "+url+API 
-              
-                print(loadgen_cmd) 
-        
-                #execute the load on the service
-                output = subprocess.check_output([loadgen_cmd], shell=True)
-                slos_dict[con_req] = self.extract_slo(output)
-                throughput_values.append(slos_dict[con_req][0])
-                latency_values.append(slos_dict[con_req][1])
-                if '[200]' in slos_dict[con_req][2]:
-                     errors.append(total_req-slos_dict[con_req][2]['[200]'][0])
-                else:
-                     break
-                time.sleep(5)
-     
-        filename = service+"_api_"+API.replace("/", "_")+"_m_"+method+"_p_max_throughput"+"_t_"+time.strftime("%Y%m%d-%H%M%S")
-        self.reporter(filename,throughput_values,latency_values,errors,num_requests)
-        return self.get_conn_req_max_throughput(throughput_values,errors,num_requests)
-
-    def profile_cpu(self,headers_str,method,service,port,API,data,total_req,con_req,target_through,target_resp):
-
-        throughput_values = []
-        latency_values = []
-        errors=[]
-        slos_dict = {}
-
-        cpu_cores=[2,1.8,1.6,1.2,1,0.8,0.6,0.4,0.2]
-        url = 'http://'+service+':'+str(port)
-
-        
-        loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)
-                
-        if headers_str != "":
-             loadgen_cmd = loadgen_cmd+" "+headers_str+" -m "+method+" -D data.txt"
-                  
-        loadgen_cmd = loadgen_cmd+" "+url+API 
-        
-        # run the stress and simulated process co-located for different array sizes
-        for cpu_core in tqdm(cpu_cores):        
-                print(loadgen_cmd)
-                sleep_time = 10
-                # now restart the service
-                self.allocate_cpu(service,cpu_core)
-                while(float(subprocess.check_output(["kubectl get deployment ts-station-service | tail -n +2 | awk '{print $4}'"], shell=True)) != 1):                       
-                      time.sleep(3)
-                      print(float(subprocess.check_output(["kubectl get deployment ts-station-service | tail -n +2 | awk '{print $4}'"], shell=True)))
-                status_code = 0
-                while(status_code != 200):
-                      
-                      try:
-                          status_code = requests.get(url+"/welcome",timeout=None).status_code
-                      except requests.exceptions.ConnectionError:
-                           sleep_time = sleep_time+20
-                           time.sleep(sleep_time)
-                           print(status_code)
-                #execute the load on the service
-                output = subprocess.check_output([loadgen_cmd], shell=True)
-                slos_dict[cpu_core] = self.extract_slo(output)  
-                print(slos_dict[cpu_core])
-                throughput_values.append(slos_dict[cpu_core][0])
-                latency_values.append(slos_dict[cpu_core][1])
-                if '[200]' in slos_dict[cpu_core][2]:
-                    errors.append(total_req-slos_dict[cpu_core][2]['[200]'][0])
-                else:
-                    errors.append(total_req)
-                time.sleep(5)
-        
-        filename = service+"_api_"+API.replace("/", "_")+"_m_"+method+"_p_cpu"+"_t_"+time.strftime("%Y%m%d-%H%M%S")
-        self.reporter(filename,throughput_values,latency_values,errors,cpu_cores)
-        return self.get_res_for_target(throughput_values,errors,latency_values,cpu_cores,target_through,target_resp)
-
-    def profile_mem(self,headers_str,method,service,port,API,data,total_req,con_req,target_through,target_resp,max_cpu):
-
-        throughput_values = []
-        latency_values = []
-        errors=[]
-        slos_dict = {}
-
-        self.allocate_cpu(service,max_cpu)
-        time.sleep(10)
-
-        url = 'http://'+service+':'+str(port)
-        
-         
-        loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)
-                
-        if headers_str != "":
-              loadgen_cmd = loadgen_cmd+" "+headers_str+" -m "+method+" -D data.txt"
-                  
-        loadgen_cmd = loadgen_cmd+" "+url+API 
-     
-        mem_available = ["800Mi","900Mi","1000Mi","2000Mi","3000Mi","4000Mi","5000Mi","6000Mi"]
-
-        # run the stress and simulated process co-located for different array sizes
-        for mem in tqdm(mem_available):        
-           
-                time.sleep(5)
-                # now restart the service
-                self.allocate_mem(service,mem)
-                time.sleep(5)
-                sleep_time = 10
-                while(float(subprocess.check_output(["kubectl get deployment ts-station-service | tail -n +2 | awk '{print $4}'"], shell=True)) != 1):
-                      time.sleep(3)
-                      print(float(subprocess.check_output(["kubectl get deployment ts-station-service | tail -n +2 | awk '{print $4}'"], shell=True)))
-                status_code = 0
-                while(status_code != 200):
-
-                      try:
-                          status_code = requests.get(url+"/welcome",timeout=None).status_code
-                      except requests.exceptions.ConnectionError:
-                           sleep_time = sleep_time+20
-                           time.sleep(sleep_time)
-                           print(status_code)
-                #execute the load on the service
-                output = subprocess.check_output([loadgen_cmd], shell=True)
-                slos_dict[mem] = self.extract_slo(output)
-                throughput_values.append(slos_dict[mem][0])
-                latency_values.append(slos_dict[mem][1])
-                if '[200]' in slos_dict[mem][2]:
-                   errors.append(total_req-slos_dict[mem][2]['[200]'][0])
-                else:
-                   errors.append(total_req)
-                print(slos_dict[mem])
-                time.sleep(5)
-
-        filename = service+"_api_"+API.replace("/", "_")+"_m_"+method+"_p_mem"+"_t_"+time.strftime("%Y%m%d-%H%M%S")
-        self.reporter(filename,throughput_values,latency_values,errors,mem_available)
-        return self.get_res_for_target(throughput_values,errors,latency_values,mem_available,target_through,target_resp)
-
-
-
+                    return keys[index]
+    
+    def get_value_for_maxthroughput():
+             throughput_values = self.throughput_values
+             errors = self.errors
+             keys = self.keys
+             while len(throughput_values) != 0 and errors[throughput_values.index(max(throughput_values))] < 100:
+                    index = throughput_values.index(max(throughput_values))
+                    throughput_values.remove(throughput_values[index])
+                    errors.remove(errors[index])
+                    values.remove(values[index])
+             if len(throughput_values) != 0:     
+                 return values[throughput_values.index(max(throughput_values))]
+             return 0   
+   
 

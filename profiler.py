@@ -245,7 +245,7 @@ class service:
 
       def generate_data(self,file_name):
             if not os.path.isfile(file_name):
-               self.data.generate_data_from_schema(file_name)
+               self.data.generate_data(file_name)
 
       def wait(self):
             service_up = 0

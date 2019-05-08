@@ -1,0 +1,33 @@
+- service:
+        port: 12345
+        name: 'ts-station-service'
+        data:
+        - type:
+            id : pystr
+            name : pystr
+            stayTime: pyint
+        endpoints:
+        - endpoint:
+             - method: 'POST'
+             - name: '/station/create'
+             - header: 'Content-Type: application/json'
+             - target_throughput: 300
+             - target_latency: 0.5
+        - endpoint:
+             - method: 'POST'
+             - name: '/station/exist'
+             - header: 'Content-Type: application/json'
+             - target_throughput: 300
+             - target_latency: 0.5
+        - endpoint:
+             - method: 'GET'
+             - name: '/station/query'
+             - header: ""
+             - target_throughput: 300
+             - target_latency: 0.5   
+        - endpoint:
+             - method: 'POST'
+             - name: '/station/delete'
+             - header: 'Content-Type: application/json'
+             - target_throughput: 300
+             - target_latency: 0.5

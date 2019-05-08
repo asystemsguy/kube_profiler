@@ -252,7 +252,7 @@ class service:
             while(service_up != 1):                       
                   time.sleep(3)
                   service_up = float(subprocess.check_output(["kubectl get deployment "+self.name+" | tail -n +2 | awk '{print $4}'"], shell=True))
-                  print("status of "+self.name+" "+service_up)
+                  print("status of "+self.name+" "+str(service_up))
 
             sleep_time = 10
             status_code = 0

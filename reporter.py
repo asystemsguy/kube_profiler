@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import time
 
 class reporter:
     def __init__(self,total_req):

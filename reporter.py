@@ -99,10 +99,10 @@ class reporter:
         except Exception as e:
             print(e)          
 
-    def dump_data(self,filename,tag):
-        self.dump_throughput_values(filename,tag)
-        self.dump_latency_values(filename,tag)
-        self.dump_errors(filename,tag)
+    def dump_data(self,filename):
+        self.dump_throughput_values(filename,"throughput_values")
+        self.dump_latency_values(filename,"latency_values")
+        self.dump_errors(filename,"errors")
 
     # get the resource for target throughput and response time
     def get_value_for_target(self,target_through,target_resp):

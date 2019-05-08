@@ -3,7 +3,7 @@ import yaml
 
 prof = profiler()
 
-with open("station.yaml", 'r') as stream:
+with open("testfiles/station.yaml", 'r') as stream:
     try:
         config = yaml.safe_load(stream)
         #total_req = config['num_req']

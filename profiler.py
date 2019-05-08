@@ -83,8 +83,8 @@ class profiler:
         return [throughput,latency,responses]
 
     def reporter(self,filename,throughput_values,latency_values,errors,values):
-        
-        with open('data/data_'+filename+'.txt', 'w') as f:
+        try:
+         with open('data/data_'+filename+'.txt', 'w') as f:
             f.write("throughput:\n")
             for value,item in zip(values,throughput_values):
                 f.write("%s," % value)
@@ -97,22 +97,23 @@ class profiler:
             for value,item in zip(values,errors):
                 f.write("%s," % value)
                 f.write("%s\n" % item)
-
-        plt.plot(values, throughput_values)
-        plt.xlabel('number of concurrent requests')
-        plt.ylabel('throughput (req/sec)')
-        plt.savefig("data/graph_"+filename+'_throughput.pdf')
+            plt.plot(values, throughput_values)
+            plt.xlabel('number of concurrent requests')
+            plt.ylabel('throughput (req/sec)')
+            plt.savefig("data/graph_"+filename+'_throughput.pdf')
        
-        plt.plot(values, latency_values)
-        plt.xlabel('number of concurrent requests')
-        plt.ylabel('latency (secs)')
-        plt.savefig("data/graph_"+filename+'_latency.pdf')
+            plt.plot(values, latency_values)
+            plt.xlabel('number of concurrent requests')
+            plt.ylabel('latency (secs)')
+            plt.savefig("data/graph_"+filename+'_latency.pdf')
 
-        plt.plot(values, errors)
-        plt.xlabel('number of concurrent requests')
-        plt.ylabel('number of non-200 requests')
-        plt.savefig("data/graph_"+filename+'_errors.pdf')
-
+            plt.plot(values, errors)
+            plt.xlabel('number of concurrent requests')
+            plt.ylabel('number of non-200 requests')
+            plt.savefig("data/graph_"+filename+'_errors.pdf')
+        except Exception as e:
+            print(e)
+        return True
     def get_conn_req_max_throughput(self,throughput_values,errors,values):
          while len(throughput_values) != 0 and errors[throughput_values.index(max(throughput_values))] < 100:
                 index = throughput_values.index(max(throughput_values))

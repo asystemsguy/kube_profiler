@@ -243,10 +243,11 @@ class service:
           self.url = 'http://'+self.name+':'+str(self.port)
           for endpoint in endpoints:
             endpoint.service = self
+          os.mkdir("fakedata")
 
       def generate_data(self,file_name):
             if not os.path.isfile(file_name):
-               self.data.generate_data(file_name)
+               self.data.generate_data("fakedata/"+file_name)
 
       def wait(self):
             service_up = -1
@@ -310,6 +311,8 @@ class reporter:
           self.slos_dict = {}
           self.keys = []
           self.total_req = total_req
+          os.mkdir("data")
+          os.mkdir("data")
 
     def extract_hey_output(self,output):       
         output_str = output.decode("utf-8") 

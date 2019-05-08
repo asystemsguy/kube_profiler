@@ -82,7 +82,7 @@ class endpoint:
 
              loadgen_cmd = self.get_load_command(total_req,con_req,timeout,datafilename)
 
-             return subprocess.check_output([loadgen_cmd], shell=True) 
+             return subprocess.check_output([loadgen_cmd], shell=True,timeout=timeout) 
 
         def get_sign(self):
               return "_api_"+self.name.replace("/", "_")+"_m_"+self.method

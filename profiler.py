@@ -156,7 +156,7 @@ class cpu(resource):
 
               print("## service: ",service.name,"\n")
               for endpoint in service.endpoints:
-                     print("### endpoint: ",endpoint.method," ",endpoint.name,"\n")
+                    print("### endpoint: ",endpoint.method," ",endpoint.name,"\n")
                     report = reporter(total_req)
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        

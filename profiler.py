@@ -243,10 +243,13 @@ class service:
           self.url = 'http://'+self.name+':'+str(self.port)
           for endpoint in endpoints:
             endpoint.service = self
-          os.mkdir("fakedata")
+          try:
+            os.mkdir("fakedata")
+          except Exception as e:
+            print(e)
 
       def generate_data(self,file_name):
-            if not os.path.isfile(file_name):
+            if not os.path.isfile("fakedata/"+file_name):
                self.data.generate_data("fakedata/"+file_name)
 
       def wait(self):
@@ -311,9 +314,12 @@ class reporter:
           self.slos_dict = {}
           self.keys = []
           self.total_req = total_req
-          os.mkdir("output")
-          os.mkdir("output/data")
-          os.mkdir("output/graphs")
+          try:
+            os.mkdir("output")
+            os.mkdir("output/data")
+            os.mkdir("output/graphs")
+          except Exception as e:
+            print(e)
 
     def extract_hey_output(self,output):       
         output_str = output.decode("utf-8") 

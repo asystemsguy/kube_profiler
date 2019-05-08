@@ -9,7 +9,7 @@ resources:
         min: 0.1
         interval: 0.1
    mem:
-        max: 16000
+        max: 6000
         min: 1000
         interval: 1000
 services:

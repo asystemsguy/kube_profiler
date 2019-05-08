@@ -90,12 +90,12 @@ class max_conn_requests(resource):
 
                             #execute the load on the service
                             output = subprocess.check_output([loadgen_cmd], shell=True) 
-                            reporter.process(key,output)                         
+                            report.process(key,output)                         
                             time.sleep(5)
                     
                     filename = service.get_sign()+endpoint.get_sign()+"_p_"+self.__class__.__name__+"_t_"+time.strftime("%Y%m%d-%H%M%S")
-                    endpoint.max_conn_requests = reporter.get_value_for_maxthroughput()
-                    reporter.dump_data(filename) 
+                    endpoint.max_conn_requests = report.get_value_for_maxthroughput()
+                    report.dump_data(filename) 
                     #limits.append(reporter.get_value_for_target(keys,target_through,target_resp))
             #   return limits
 
@@ -114,7 +114,7 @@ class memory(resource):
 
               for endpoint in service.endpoints:
 
-                    reporter = reporter(total_req)
+                    report = reporter(total_req)
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
                             
@@ -129,12 +129,12 @@ class memory(resource):
 
                             #execute the load on the service
                             output = subprocess.check_output([loadgen_cmd], shell=True) 
-                            reporter.process(key,output)                         
+                            report.process(key,output)                         
                             time.sleep(5)
                     
                     filename = service.get_sign()+endpoint.get_sign()+"_p_"+self.__class__.__name__+"_t_"+time.strftime("%Y%m%d-%H%M%S")
-                    reporter.dump_data(filename) 
-                    limits.append(reporter.get_value_for_target(keys,target_through,target_resp))
+                    report.dump_data(filename) 
+                    limits.append(report.get_value_for_target(keys,target_through,target_resp))
 
               #  return limits
 
@@ -154,7 +154,7 @@ class cpu(resource):
 
               for endpoint in service.endpoints:
 
-                    reporter = reporter(total_req)
+                    report = reporter(total_req)
                     # run the stress and simulated process co-located for different array sizes
                     for key in tqdm(keys):        
                             
@@ -169,12 +169,12 @@ class cpu(resource):
 
                             #execute the load on the service
                             output = subprocess.check_output([loadgen_cmd], shell=True) 
-                            reporter.process(key,output)                         
+                            report.process(key,output)                         
                             time.sleep(5)
                     
                     filename = service.get_sign()+endpoint.get_sign()+"_p_"+self.__class__.__name__+"_t_"+time.strftime("%Y%m%d-%H%M%S")
-                    reporter.dump_data(filename) 
-                    limits.append(reporter.get_value_for_target(keys,target_through,target_resp))
+                    report.dump_data(filename) 
+                    limits.append(report.get_value_for_target(keys,target_through,target_resp))
 
              #   return limits
 
@@ -252,7 +252,7 @@ class service:
             while(service_up != 1):                       
                   time.sleep(3)
                   service_up = float(subprocess.check_output(["kubectl get deployment "+self.name+" | tail -n +2 | awk '{print $4}'"], shell=True))
-                  print("status of "+self.name+" "+str(service_up))
+                  print("number of available instances of "+self.name+" :"+str(service_up))
 
             sleep_time = 10
             status_code = 0

@@ -29,7 +29,23 @@ class kube:
     def allocate_mem(self,service,mem,namespace="default"):
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
-           self.update_deployment(deployment,service,namespace)
+
+           # Retry for 5 times if conflit exception happens due to quick change in resources
+           count = 0
+           while True:
+                 try:
+                         api_response = self.extensions_v1beta1.patch_namespaced_deployment(
+                            name=service.name,
+                            namespace=namespace,
+                            body=deployment)
+                 except Exception as e:
+                          deployment = self.get_deployment(service,namespace)
+                          deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
+                          if count > 5:
+                              break
+                          count = count + 1
+                          time.sleep(5)
+                 break
 
     def get_current_cpu(self,service,namespace="default"):
 

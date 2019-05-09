@@ -22,6 +22,7 @@ class resource:
               self.platform.restart(service)
               
 
+
               # Run profiling for each endpoint
               for endpoint in service.endpoints:
 
@@ -31,9 +32,9 @@ class resource:
 
                     report = reporter(total_req)
 
-                    timeout_t = time.time() + timeout  
+                    timeout_t = time.time() + timeout 
 
-                    self.allocate(endpoint,2)
+                    self.do_start(endpoint) 
 
                     # Run the load on the endpoint for each iteration
                     # an iteration can be a resource partition or a concurrent load depending on resource
@@ -46,20 +47,15 @@ class resource:
                             try: 
                                output = endpoint.gen_load(total_req,endpoint.max_conn_requests,timeout,self.__class__.__name__+str(key))
                             except Exception as e:
-                               # Timeout due to overload on the server
-                               # Restart the server
-                               self.platform.restart(service)
-                               # Dump the data for logging and future use
-                               report.dump_data(filename)
-                               # Max load reached stop running profling on this endpoint
-                               break
+                                handle_timeout(endpoint,report)
+
                             # process the output from load
                             report.process(key,output)                         
                             
                             # Timeout may due to delay in startup of the service etc.
                             if time.time() > timeout_t:
                               # try higher CPU or memory allocation
-                                continue
+                               handle_timeout(endpoint,report)
                             else:
                                time.sleep(2)
                     
@@ -77,10 +73,18 @@ class resource:
 
      def finally_do(self,endpoint,report):
           pass
+     def do_start(self,endpoint):
+          pass
+     def handle_timeout(self,endpoint,report):
+          continue
 
 class max_conn_requests(resource):
        def __init__(self,min_res,max_res,interval,platform):
              resource.__init__(self,min_res,max_res,interval,platform)
+
+       def do_start(self,endpoint):
+            self.platform.allocate_cpu(endpoint.service,2)
+            self.platform.allocate_mem(endpoint.service,"16GB")
 
        def allocate(self,endpoint,value):
              endpoint.max_conn_requests = value
@@ -88,10 +92,22 @@ class max_conn_requests(resource):
        def finally_do(self,endpoint,report):
              endpoint.max_conn_requests = report.get_maxthroughput()
 
+       def handle_timeout(self,endpoint,report):
+             # Timeout due to overload on the server
+             # Restart the server
+             self.platform.restart(service)
+             # Dump the data for logging and future use
+             report.dump_data(filename)
+             # Max load reached stop running profling on this endpoint
+             break
+
 
 class memory(resource):
        def __init__(self,min_res,max_res,interval,platform):
              resource.__init__(self,min_res,max_res,interval,platform)
+
+       def do_start(self,endpoint):
+             self.allocate(endpoint,"16G")
 
        def allocate(self,endpoint,value):    
              self.platform.allocate_mem(endpoint.service,value)
@@ -104,6 +120,9 @@ class cpu(resource):
     
        def __init__(self,min_res,max_res,interval,platform):
              resource.__init__(self,min_res,max_res,interval,platform)
+
+       def do_start(self,endpoint):
+            self.allocate(endpoint,2)
 
        def allocate(self,endpoint,value):
              self.platform.allocate_cpu(endpoint.service,value)

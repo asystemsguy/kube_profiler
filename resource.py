@@ -13,7 +13,7 @@ class resource:
 
      def profile(self,service,total_req,timeout):
 
-              print("# profiling for "+self.__class__.__name__+"\n")
+              print("\n# profiling for "+self.__class__.__name__+"\n")
                   
               keys = np.arange(self.min, self.max, self.interval)
 
@@ -66,7 +66,7 @@ class resource:
 
               service.delete_fake_data()
                         
-                        
+
      def allocate(self,service,value):
           pass
 
@@ -88,6 +88,8 @@ class max_conn_requests(resource):
 
        def finally_do(self,endpoint,report):
              endpoint.max_conn_requests = report.get_maxthroughput()
+             if endpoint.max_conn_requests < 1:
+                 endpoint.max_conn_requests = 1
 
        def profile(self,service,total_req,timeout):
 

@@ -1,158 +1,204 @@
-- service:
-        port: 11188
-        name: 'ts-security-service'
-        endpoints:
-        - endpoint:
-            - method: 'GET'
-            - name: '/securityConfig/findAll'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5
-- service:
-        port: 12031
-        name: 'ts-order-service'
-        endpoints:
-        - endpoint:
-            - method: 'GET'
-            - name: '/order/findAll'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5
-
-- service:
-        port: 12032
-        name: 'ts-order-other-service'
-        endpoints:
-        - endpoint:
-            - method: 'GET'
-            - name: '/orderOther/findAll'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5
-- service:
-        port: 12346
-        name: 'ts-travel-service'
-        endpoints:
-        - endpoint:
-            - method: 'GET'
-            - name: '/travel/queryAll'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5
-- service:
-        port: 16346
-        name: 'ts-travel2-service'
-        endpoints:
-        - endpoint:
-            - method: 'GET'
-            - name: '/travel2/queryAll'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5
-- service:
-        port: 16579
-        name: 'ts-price-service'
-        endpoints:
-        - endpoint:
-            - method: 'GET'
-            - name: '/price/queryAll'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5
-        - endpoint:
-             - method: 'POST'
-             - name: '/price/query'
-             - header: 'Content-Type: application/json'
-             - data: '{"trainType":"GaoTieOne","routeId":"92708982-77af-4318-be25-57ccb0ff69ad"}'
-             - target_throughput: 300
-             - target_latency: 0.5 
-- service:
+total_req: 1000
+timeout: 400
+resources:
+   conn_reqs:        
+        min: 1
+        interval: 200
+        max: 1000
+   cpu:
+        max: 2
+        min: 0.1
+        interval: 0.4
+   mem:
+        max: 6000
+        min: 1000
+        interval: 1000
+services:
+   - service:
         port: 12345
         name: 'ts-station-service'
+        data:
+        - type:
+            id : pystr
+            name : pystr
+            stayTime: pyint
         endpoints:
+        - endpoint:
+             - method: 'POST'
+             - name: '/station/create'
+             - header: 'Content-Type: application/json'
+             - target_throughput: 300
+             - target_latency: 0.5
         - endpoint:
              - method: 'POST'
              - name: '/station/exist'
              - header: 'Content-Type: application/json'
-             - data: '{"name":"Jia Xing Nan"}'
              - target_throughput: 300
-             - target_latency: 0.5 
+             - target_latency: 0.5
         - endpoint:
              - method: 'GET'
              - name: '/station/query'
              - header: ""
-             - data: ''
              - target_throughput: 300
-             - target_latency: 0.5 
-- service:
-        port: 14567
-        name: 'ts-train-service'
-        endpoints:
+             - target_latency: 0.5   
         - endpoint:
              - method: 'POST'
-             - name: '/train/retrieve'
+             - name: '/station/delete'
              - header: 'Content-Type: application/json'
-             - data: '{"id":"ZhiDa"}'
              - target_throughput: 300
              - target_latency: 0.5
-        - endpoint:
-             - method: 'GET'
-             - name: '/train/query'
-             - header: ""
-             - data: ''
-             - target_throughput: 300
-             - target_latency: 0.5 
-- service:
-        port: 15679
-        name: 'ts-config-service'
-        endpoints:
-        - endpoint:
+    - service:
+            port: 11188
+            name: 'ts-security-service'
+            endpoints:
             - endpoint:
-            - method: 'POST'
-            - name: '/config/query'
-            - header: 'Content-Type: application/json'
-            - data: '{"name":"DirectTicketAllocationProportion"}'
-            - target_throughput: 300
-            - target_latency: 0.5 
-        - endpoint:
-            - method: 'GET'
-            - name: '/config/queryAll'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5 
-- service:
-        port: 15679
-        name: 'ts-contact-service'
-        endpoints:
-        - endpoint:
-             - method: 'GET'
-             - name: '/contacts/queryAll'
-             - header: ""
-             - data: ''
-             - target_throughput: 300
-             - target_latency: 0.5
-- service:
-        port: 12349
-        name: 'ts-sso-service'
-        endpoints:
-        - endpoint:
-            - method: 'GET'
-            - name: '/account/findAll'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5
-        - endpoint:
-            - method: 'GET'
-            - name: '/account/findAllLogin'
-            - header: ""
-            - data: ''
-            - target_throughput: 300
-            - target_latency: 0.5
+                - method: 'GET'
+                - name: '/securityConfig/findAll'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5
+    - service:
+            port: 12031
+            name: 'ts-order-service'
+            endpoints:
+            - endpoint:
+                - method: 'GET'
+                - name: '/order/findAll'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5
+
+    - service:
+            port: 12032
+            name: 'ts-order-other-service'
+            endpoints:
+            - endpoint:
+                - method: 'GET'
+                - name: '/orderOther/findAll'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5
+    - service:
+            port: 12346
+            name: 'ts-travel-service'
+            endpoints:
+            - endpoint:
+                - method: 'GET'
+                - name: '/travel/queryAll'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5
+    - service:
+            port: 16346
+            name: 'ts-travel2-service'
+            endpoints:
+            - endpoint:
+                - method: 'GET'
+                - name: '/travel2/queryAll'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5
+    - service:
+            port: 16579
+            name: 'ts-price-service'
+            data:
+            - type:
+                routeId : pystr
+                trainType : pystr
+            endpoints:
+            - endpoint:
+                - method: 'GET'
+                - name: '/price/queryAll'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5
+            - endpoint:
+                 - method: 'POST'
+                 - name: '/price/query'
+                 - header: 'Content-Type: application/json'
+                 - target_throughput: 300
+                 - target_latency: 0.5 
+    - service:
+            port: 12345
+            name: 'ts-station-service'
+            data:
+            - type:
+                name : pystr
+            endpoints:
+            - endpoint:
+                 - method: 'POST'
+                 - name: '/station/exist'
+                 - header: 'Content-Type: application/json'
+                 - target_throughput: 300
+                 - target_latency: 0.5 
+            - endpoint:
+                 - method: 'GET'
+                 - name: '/station/query'
+                 - header: ""
+                 - target_throughput: 300
+                 - target_latency: 0.5 
+    - service:
+            port: 14567
+            name: 'ts-train-service'
+            data:
+            - type:
+                id : pystr
+            endpoints:
+            - endpoint:
+                 - method: 'POST'
+                 - name: '/train/retrieve'
+                 - header: 'Content-Type: application/json'
+                 - target_throughput: 300
+                 - target_latency: 0.5
+            - endpoint:
+                 - method: 'GET'
+                 - name: '/train/query'
+                 - header: ""
+                 - target_throughput: 300
+                 - target_latency: 0.5 
+    - service:
+            port: 15679
+            name: 'ts-config-service'
+            data:
+            - type:
+                name : pystr
+            endpoints:
+            - endpoint:
+                - endpoint:
+                - method: 'POST'
+                - name: '/config/query'
+                - header: 'Content-Type: application/json'
+                - target_throughput: 300
+                - target_latency: 0.5 
+            - endpoint:
+                - method: 'GET'
+                - name: '/config/queryAll'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5 
+    - service:
+            port: 15679
+            name: 'ts-contact-service'
+            endpoints:
+            - endpoint:
+                 - method: 'GET'
+                 - name: '/contacts/queryAll'
+                 - header: ""
+                 - target_throughput: 300
+                 - target_latency: 0.5
+    - service:
+            port: 12349
+            name: 'ts-sso-service'
+            endpoints:
+            - endpoint:
+                - method: 'GET'
+                - name: '/account/findAll'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5
+            - endpoint:
+                - method: 'GET'
+                - name: '/account/findAllLogin'
+                - header: ""
+                - target_throughput: 300
+                - target_latency: 0.5

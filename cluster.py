@@ -44,13 +44,13 @@ class service:
                   if(service_up == 0.0):
                       print("number of available instances of "+self.name+" :"+str(service_up))
 
-            sleep_time = 10
+            sleep_time = 1
             status_code = 0
             while(status_code != 200):      
                   try:
                       status_code = requests.get(self.url+"/welcome",timeout=None).status_code
                   except requests.exceptions.ConnectionError:
-                       sleep_time = sleep_time+20
+                       sleep_time = sleep_time+2
                        time.sleep(sleep_time)
                        print("service "+self.name+" responding with code "+str(status_code)+" trying again ...")
       def get_sign(self):

@@ -26,7 +26,7 @@ class kube:
          
     def update_deployment(self,deployment,service,namespace="default"):
           count  = 0 
-
+          service.wait()
           print(deployment)
           while True:
                  try:

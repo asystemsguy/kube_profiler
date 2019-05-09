@@ -3,6 +3,7 @@ import json
 import time
 import requests
 import subprocess
+import shutil
 from faker_schema.faker_schema import FakerSchema
 
 class service:
@@ -16,6 +17,7 @@ class service:
           for endpoint in endpoints:
             endpoint.service = self
           try:
+            shutil.rmtree("fakedata")
             os.mkdir("fakedata")
           except FileExistsError as e:
              pass

@@ -43,7 +43,7 @@ class kube:
 
            # Retry for 5 times if conflit exception happens due to quick change in resources
            count = 0
-           while True
+           while True:
                  try:
                          api_response = self.extensions_v1beta1.patch_namespaced_deployment(
                             name=service.name,

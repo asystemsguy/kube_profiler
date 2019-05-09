@@ -24,14 +24,26 @@ class kube:
           deployment = get_deployment(service,namespace)
           return deployment.spec.template.spec.containers[0].resources.limits['memory']
          
+    def update_deployment(self,deployment,service,namespace="default"):
+          count  = 0 
+          while True:
+                 try:
+                   api_response = self.extensions_v1beta1.patch_namespaced_deployment(
+                      name=service.name,
+                      namespace=namespace,
+                      body=deployment)
+                 except Exception as e:
+                      print(e)
+                      if count < 5:
+                          count = count+1
+                          continue
+                 break
+
     def allocate_mem(self,service,mem,namespace="default"):
                    
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
-           api_response = self.extensions_v1beta1.patch_namespaced_deployment(
-              name=service.name,
-              namespace="default",
-              body=deployment)
+           self.update_deployment(deployment,service,deployment)
 
     def get_current_cpu(self,service,namespace="default"):
 
@@ -41,7 +53,6 @@ class kube:
     def allocate_cpu(self,service,cpu,namespace="default"):
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
-           api_response = self.extensions_v1beta1.patch_namespaced_deployment(
-              name=service.name,
-              namespace="default",
-              body=deployment)
+           self.update_deployment(deployment,service,deployment)
+
+

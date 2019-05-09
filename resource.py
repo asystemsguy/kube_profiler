@@ -38,6 +38,7 @@ class resource:
                     self.allocate(endpoint,2)
 
                     # Run the load on the endpoint for each iteration
+                    # an iteration can be a resource partition or a concurrent load depending on resource
                     for key in tqdm(keys):        
                                                
                             # allocate a resource in this iteration and restart the service                    
@@ -47,16 +48,20 @@ class resource:
                             try: 
                                output = endpoint.gen_load(total_req,endpoint.max_conn_requests,timeout,self.__class__.__name__+str(key))
                             except Exception as e:
+                               # Timeout due to overload on the server
+                               # Restart the server
                                self.platform.restart(service)
-                               # Dump the data fro logging and future use
+                               # Dump the data for logging and future use
                                report.dump_data(filename)
-                               print(e)
+                               # Max load reached stop running profling on this endpoint
                                break
                             # process the output from load
                             report.process(key,output)                         
                             
+                            # Timeout may due to delay in startup of the service etc.
                             if time.time() > timeout_t:
-                                break
+                              # try higher CPU or memory allocation
+                                continue
                             else:
                                time.sleep(2)
                     

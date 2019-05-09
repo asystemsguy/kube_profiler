@@ -87,7 +87,7 @@ class memory(resource):
              resource.__init__(self,min_res,max_res,interval,platform)
 
        def allocate(self,endpoint,value):    
-             platform.allocate_mem(endpoint.service,value)
+             self.platform.allocate_mem(endpoint.service,value)
 
        def finally_do(self,endpoint,report):
              required_memory = report.get_value_for_target(endpoint.target_throughput,endpoint.target_latency)
@@ -99,7 +99,7 @@ class cpu(resource):
              resource.__init__(self,min_res,max_res,interval,platform)
 
        def allocate(self,endpoint,value):
-             platform.allocate_cpu(endpoint.service,value)
+             self.platform.allocate_cpu(endpoint.service,value)
 
        def finally_do(self,endpoint,report):
              required_cpu = report.get_value_for_target(endpoint.target_throughput,endpoint.target_latency)

@@ -37,21 +37,27 @@ class kube:
           return deployment.spec.template.spec.containers[0].resources.limits['cpu']  
 
     def allocate_cpu(self,service,cpu,namespace="default"):
+
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
-           try:
-                   api_response = self.extensions_v1beta1.patch_namespaced_deployment(
-                      name=service.name,
-                      namespace=namespace,
-                      body=deployment)
-           except Exception as e:
-                    deployment = self.get_deployment(service,namespace)
-                    deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
-                    api_response = self.extensions_v1beta1.patch_namespaced_deployment(
-                      name=service.name,
-                      namespace=namespace,
-                      body=deployment)
-                    time.sleep(5)
+
+           # Retry for 5 times if conflit exception happens due to quick change in resources
+           count = 0
+           while True
+                 try:
+                         api_response = self.extensions_v1beta1.patch_namespaced_deployment(
+                            name=service.name,
+                            namespace=namespace,
+                            body=deployment)
+                 except Exception as e:
+                          deployment = self.get_deployment(service,namespace)
+                          deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
+                          if count > 5:
+                              break
+                          count = count + 1
+                          time.sleep(5)
+                 break
+
 
 
 

@@ -13,8 +13,7 @@ class profiler:
 
        def run(self):
             for service in self.services:
-              for resource in self.resources:
-                    resource.profile(service,self.total_req,self.timeout)
+                  self.resources[1].profile(service,self.total_req,self.timeout)
 
        def load_config(self,filename):
 

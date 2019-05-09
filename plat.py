@@ -40,7 +40,6 @@ class kube:
                  break
 
     def allocate_mem(self,service,mem,namespace="default"):
-           service.wait()
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
            self.update_deployment(deployment,service,namespace)
@@ -51,7 +50,6 @@ class kube:
           return deployment.spec.template.spec.containers[0].resources.limits['cpu']  
 
     def allocate_cpu(self,service,cpu,namespace="default"):
-           service.wait()
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
            self.update_deployment(deployment,service,namespace)

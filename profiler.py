@@ -45,8 +45,10 @@ class profiler:
                          
                          service_name = service_conf['service']['name']
                          port = service_conf['service']['port']
-                         print(type(service_conf['service']))
-                         schema = service_conf['service']['data'][0]['type']
+                         
+                         schema = []
+                         if 'data' in service_conf['service']:
+                             schema = service_conf['service']['data'][0]['type']
 
                          endpoints = []
                          for endpoint_conf in service_conf['service']['endpoints']:

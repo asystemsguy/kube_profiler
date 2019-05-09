@@ -26,6 +26,8 @@ class kube:
          
     def update_deployment(self,deployment,service,namespace="default"):
           count  = 0 
+
+          print(deployment)
           while True:
                  try:
                    api_response = self.extensions_v1beta1.patch_namespaced_deployment(
@@ -51,8 +53,10 @@ class kube:
           return deployment.spec.template.spec.containers[0].resources.limits['cpu']  
 
     def allocate_cpu(self,service,cpu,namespace="default"):
+           print("allocate_cpu\n")
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
+           print(service,namespace,"allocate_cpu\n")
            self.update_deployment(deployment,service,deployment)
 
 

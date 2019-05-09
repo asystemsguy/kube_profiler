@@ -1,4 +1,5 @@
 from kubernetes import client, config
+import time
 import subprocess
 
 class kube:
@@ -34,7 +35,7 @@ class kube:
                       body=deployment)
                  except Exception as e:
                       print(e)
-                      sleep(5)
+                      time.sleep(5)
                       if count < 5:
                           count = count+1
                           continue

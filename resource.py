@@ -3,7 +3,6 @@ import subprocess
 import numpy as np
 from tqdm import tqdm
 from reporter import reporter
-import math
 
 class resource:
      def __init__(self,min_res,max_res,interval,platform):
@@ -39,7 +38,7 @@ class resource:
                     # an iteration can be a resource partition or a concurrent load depending on resource
                     for key in tqdm(keys):        
                             
-                            key = math.ceil(key)   
+                            key = round(key,1)   
                             # allocate a resource in this iteration and restart the service                    
                             self.allocate(endpoint,key)
              

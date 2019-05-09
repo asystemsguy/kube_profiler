@@ -45,7 +45,6 @@ class kube:
                       namespace=namespace,
                       body=deployment)
            except Exception as e:
-                    print(e)
                     deployment = self.get_deployment(service,namespace)
                     deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
                     api_response = self.extensions_v1beta1.patch_namespaced_deployment(

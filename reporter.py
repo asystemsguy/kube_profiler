@@ -103,9 +103,9 @@ class reporter:
 
     # get the resource for target throughput and response time
     def get_value_for_target(self,target_through,target_resp):
-          for index in range(0, len(throughput_values)):
-                if throughput_values[index] >= target_through and latency_values[index] <= target_resp and errors[index]==0 :
-                    return keys[index]
+          for index in range(0, len(self.throughput_values)):
+                if self.throughput_values[index] >= target_through and self.latency_values[index] <= target_resp and self.errors[index]==0 :
+                    return self.keys[index]
     
     # get maximum throughput that has no errors
     def get_maxthroughput(self):

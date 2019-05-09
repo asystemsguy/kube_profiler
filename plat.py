@@ -34,6 +34,7 @@ class kube:
                       namespace=namespace,
                       body=deployment)
                  except Exception as e:
+                      print(e)
                       deployment = self.get_deployment(service,namespace)
                       deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
                       time.sleep(5)

@@ -25,7 +25,7 @@ class kube:
           deployment = get_deployment(service,namespace)
           return deployment.spec.template.spec.containers[0].resources.limits['memory']
          
-    def update_deployment(self,deployment,service,namespace="default"):
+    def update_deployment(self,deployment,service,cpu,namespace="default"):
           count  = 0 
           while True:
                  try:
@@ -34,7 +34,8 @@ class kube:
                       namespace=namespace,
                       body=deployment)
                  except Exception as e:
-                      print(e)
+                      deployment = self.get_deployment(service,namespace)
+                      deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
                       time.sleep(5)
                       if count < 5:
                           count = count+1

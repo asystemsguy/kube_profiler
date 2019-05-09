@@ -43,7 +43,7 @@ class kube:
            service.wait()
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
-           self.update_deployment(deployment,service,deployment)
+           self.update_deployment(deployment,service,namespace)
 
     def get_current_cpu(self,service,namespace="default"):
 
@@ -54,6 +54,6 @@ class kube:
            service.wait()
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
-           self.update_deployment(deployment,service,deployment)
+           self.update_deployment(deployment,service,namespace)
 
 

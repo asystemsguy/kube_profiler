@@ -1,4 +1,4 @@
-total_req: 1000
+total_req: 100
 timeout: 120
 resources:
    conn_reqs:        

@@ -25,23 +25,6 @@ class kube:
           deployment = get_deployment(service,namespace)
           return deployment.spec.template.spec.containers[0].resources.limits['memory']
          
-    def update_deployment(self,deployment,service,cpu,namespace="default"):
-          count  = 0 
-          while True:
-                 try:
-                   api_response = self.extensions_v1beta1.patch_namespaced_deployment(
-                      name=service.name,
-                      namespace=namespace,
-                      body=deployment)
-                 except Exception as e:
-                      print(e)
-                      deployment = self.get_deployment(service,namespace)
-                      deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
-                      time.sleep(5)
-                      if count < 5:
-                          count = count+1
-                          continue
-                 break
 
     def allocate_mem(self,service,mem,namespace="default"):
            deployment = self.get_deployment(service,namespace)
@@ -56,6 +39,21 @@ class kube:
     def allocate_cpu(self,service,cpu,namespace="default"):
            deployment = self.get_deployment(service,namespace)
            deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
-           self.update_deployment(deployment,service,namespace)
+           try:
+                   api_response = self.extensions_v1beta1.patch_namespaced_deployment(
+                      name=service.name,
+                      namespace=namespace,
+                      body=deployment)
+           except Exception as e:
+                    print(e)
+                    deployment = self.get_deployment(service,namespace)
+                    deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
+                     api_response = self.extensions_v1beta1.patch_namespaced_deployment(
+                      name=service.name,
+                      namespace=namespace,
+                      body=deployment)
+                    time.sleep(5)
+
+
 
 

@@ -154,10 +154,6 @@ class max_conn_requests(resource):
                     self.finally_do(endpoint,report)
 
               service.delete_fake_data()
-                        
-
-       def handle_timeout(self,endpoint,report):
-
 
 
 class memory(resource):

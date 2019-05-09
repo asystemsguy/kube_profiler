@@ -51,8 +51,8 @@ class service:
                       status_code = requests.get(self.url+"/welcome",timeout=None).status_code
                   except requests.exceptions.ConnectionError:
                        sleep_time = sleep_time+2
+                       print("service "+self.name+" responding with code "+str(status_code)+" trying again ... after "+str(sleep_time))
                        time.sleep(sleep_time)
-                       print("service "+self.name+" responding with code "+str(status_code)+" trying again ...")
       def get_sign(self):
              return "sev_"+self.name
                  

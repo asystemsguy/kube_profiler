@@ -34,6 +34,7 @@ class kube:
                       body=deployment)
                  except Exception as e:
                       print(e)
+                      sleep(5)
                       if count < 5:
                           count = count+1
                           continue

@@ -43,6 +43,7 @@ class resource:
                             try: 
                                output = endpoint.gen_load(total_req,endpoint.max_conn_requests,timeout,self.__class__.__name__+str(key))
                             except Exception as e:
+                               self.platform.restart(service)
                                # Dump the data fro logging and future use
                                report.dump_data(filename)
                                print(e)

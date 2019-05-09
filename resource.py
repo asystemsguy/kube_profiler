@@ -24,8 +24,6 @@ class resource:
 
               # Run profiling for each endpoint
               for endpoint in service.endpoints:
-                    
-                    endpoint.max_conn_requests = 5
 
                     print("### endpoint: ",endpoint.method," ",endpoint.name,"\n")
 

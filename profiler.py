@@ -49,11 +49,11 @@ class profiler:
 
                          endpoints = []
                          for endpoint_conf in service_conf['service']['endpoints']:
-                             method = endpoint_conf['endpoint'][0]['method']
-                             endpoint_name = endpoint_conf['endpoint'][1]['name']
-                             headers = endpoint_conf['endpoint'][2]['header']
-                             target_throughput = endpoint_conf['endpoint'][3]['target_throughput']
-                             target_latency = endpoint_conf['endpoint'][4]['target_latency']
+                             method = endpoint_conf['endpoint']['method']
+                             endpoint_name = endpoint_conf['endpoint']['name']
+                             headers = endpoint_conf['endpoint']['header']
+                             target_throughput = endpoint_conf['endpoint']['target_throughput']
+                             target_latency = endpoint_conf['endpoint']['target_latency']
                              endpoints.append(endpoint(endpoint_name,method,headers,target_throughput,target_latency))
                     
                          self.services.append(service(service_name,port,service_data(schema,self.total_req),endpoints,self.plat))

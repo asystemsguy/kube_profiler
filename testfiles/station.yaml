@@ -1,5 +1,5 @@
 total_req: 100
-timeout: 120
+timeout: 60
 resources:
    conn_reqs:        
         min: 1
@@ -24,26 +24,26 @@ services:
             stayTime: pyint
         endpoints:
         - endpoint:
-             - method: 'POST'
-             - name: '/station/create'
-             - header: 'Content-Type: application/json'
-             - target_throughput: 300
-             - target_latency: 0.5
+             method: 'POST'
+             name: '/station/create'
+             header: 'Content-Type: application/json'
+             target_throughput: 300
+             target_latency: 0.5
         - endpoint:
-             - method: 'POST'
-             - name: '/station/exist'
-             - header: 'Content-Type: application/json'
-             - target_throughput: 300
-             - target_latency: 0.5
+             method: 'POST'
+             name: '/station/exist'
+             header: 'Content-Type: application/json'
+             target_throughput: 300
+             target_latency: 0.5
         - endpoint:
-             - method: 'GET'
-             - name: '/station/query'
-             - header: ""
-             - target_throughput: 300
-             - target_latency: 0.5   
+             method: 'GET'
+             name: '/station/query'
+             header: ""
+             target_throughput: 300
+             target_latency: 0.5   
         - endpoint:
-             - method: 'POST'
-             - name: '/station/delete'
-             - header: 'Content-Type: application/json'
-             - target_throughput: 300
-             - target_latency: 0.5
+             method: 'POST'
+             name: '/station/delete'
+             header: 'Content-Type: application/json'
+             target_throughput: 300
+             target_latency: 0.5

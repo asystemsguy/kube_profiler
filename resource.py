@@ -35,6 +35,8 @@ class resource:
 
                     timeout_t = time.time() + timeout  
 
+                    self.allocate(endpoint,0.5)
+
                     # Run the load on the endpoint for each iteration
                     for key in tqdm(keys):        
                                                

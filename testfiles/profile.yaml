@@ -1,5 +1,5 @@
-total_req: 1000
-timeout: 400
+total_req: 200
+timeout: 100
 resources:
    conn_reqs:        
         min: 1

@@ -116,7 +116,7 @@ class kube:
                    # Create node affinity object to send to K8 master
             print("Moving the node ",Test_node_name)
 
-            node_selector_terms  = client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[Test_node_name])
+            node_selector_terms  = client.models.v1_node_selector_requirement.V1NodeSelectorTerm()
             node_selector_terms.match_expressions = [client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[Test_node_name])] 
             required_during_scheduling_ignored_during_execution = client.models.v1_node_selector.V1NodeSelector([node_selector_terms])
             required_during_scheduling_ignored_during_execution.node_selector_terms = [node_selector_terms]

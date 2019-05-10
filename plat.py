@@ -111,7 +111,7 @@ class kube:
                  nontestnode_list.append(node.metadata.name)
 
                    # Create node affinity object to send to K8 master
-
+            print("Moving the node ",Test_node_name)
 
             node_selector_terms  = client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[Test_node_name])
             node_selector_terms.match_expressions = client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[Test_node_name]) 
@@ -143,6 +143,7 @@ class kube:
                           time.sleep(5)
 
                  break
+            print(self.get_deployment(service,namespace).spec.template.spec.affinity)
             self.current_test_service = service
 
 
@@ -161,6 +162,8 @@ class kube:
                else:
                  nontestnode_list.append(node.metadata.name)
   
+            print("Removing the service from ",Test_node_name)
+
             # Create node affinity object to send to K8 master
             affinity = client.models.v1_node_affinity.V1NodeAffinity()
             node_selector_terms  = client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',nontestnode_list)
@@ -192,7 +195,7 @@ class kube:
                           time.sleep(5)
 
                  break
-
+            print(self.get_deployment(service,namespace).spec.template.spec.affinity)
 
 
 

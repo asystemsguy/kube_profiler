@@ -177,7 +177,7 @@ services:
                 target_latency: 0.5 
     - service:
             port: 15679
-            name: 'ts-contact-service'
+            name: 'ts-contacts-service'
             endpoints:
             - endpoint:
                  method: 'GET'

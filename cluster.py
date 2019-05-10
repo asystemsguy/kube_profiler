@@ -24,6 +24,8 @@ class service:
           except Exception as e:
             print(e)
 
+      def prepare_for_profiling():
+          assain_service_to_testVM(self)
 
       def generate_fake_data(self,file_name):
             if not os.path.isfile("fakedata/"+file_name):

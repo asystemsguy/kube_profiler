@@ -23,25 +23,10 @@ def get_deployment(service,namespace="default"):
                 return deployment  
 
  
-for node in v1.list_node().items:
-      if 'type' in node.metadata.labels:
-              if node.metadata.labels['type'] == 'test':
-                    nodename = node.metadata.name
-      else:
-         nontestnode_list.append(node.metadata.name)
+
        
 deployment_service_1 = get_deployment(service_exit)
 deployment_service_2 = get_deployment(service_entry)
-
-affinity = client.models.v1_node_affinity.V1NodeAffinity()
-condition = {'key': 'kubernetes.io/hostname',
- 'operator': 'In',
- 'values': []}
-node_selector_terms  = client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[])
-node_selector_terms.match_expressions = client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[]) 
-required_during_scheduling_ignored_during_execution = client.models.v1_node_selector.V1NodeSelector([node_selector_terms])
-required_during_scheduling_ignored_during_execution.node_selector_terms = [node_selector_terms]
-affinity.required_during_scheduling_ignored_during_execution = required_during_scheduling_ignored_during_execution
 
 print(type(deployment_service_1.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0]))
 affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions.values = nontestnode_list

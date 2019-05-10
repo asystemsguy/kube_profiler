@@ -13,6 +13,8 @@ class profiler:
 
        def run(self):
             for service in self.services:
+                
+                service.prepare_for_profiling()
                 for resource in self.resources: 
                      resource.profile(service,self.total_req,self.timeout)
 

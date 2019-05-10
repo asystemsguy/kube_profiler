@@ -2,6 +2,7 @@ from kubernetes import client, config, watch
 import time
 import util
 import json
+from cluster import service
 
 class kube:
 
@@ -122,7 +123,9 @@ class kube:
 
             # update the spec
             deployment.spec.template.spec.affinity.node_affinity = affinity
-
+            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].key = 'kubernetes.io/hostname'
+            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].operator = 'In'
+            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].values = [Test_node_name]
             # Update the spec
             # Retry for 5 times if conflit exception happens due to quick change in resources
             count = 0

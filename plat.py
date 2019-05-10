@@ -11,8 +11,6 @@ class kube:
           self.v1 = client.CoreV1Api()
           self.current_test_service = ""
     
-    def is_machine_up(self,machine):
-           for n in v1.list_node().items:
     def get_deployment(self,service,namespace="default"):
          deployments_list = self.extensions_v1beta1.list_namespaced_deployment(namespace)
          if deployments_list is None:
@@ -98,7 +96,7 @@ class kube:
 
             self.remove_service_from_testVM(self.current_test_service)
 
-            sleep(10)
+            time.sleep(10)
             
             deployment = self.get_deployment(service,namespace)
 
@@ -109,7 +107,7 @@ class kube:
                if 'type' in node.metadata.labels:
                      if node.metadata.labels['type'] == 'test':
                            Test_node_name = node.metadata.name
-              else:
+               else:
                  nontestnode_list.append(node.metadata.name)
 
                    # Create node affinity object to send to K8 master
@@ -149,7 +147,8 @@ class kube:
 
 
     def remove_service_from_testVM(self,service,namespace="default"):
-
+            if self.current_test_service == "":
+                return
             deployment = self.get_deployment(service,namespace)
 
             # get list of nodes that are not labeled test or load
@@ -159,7 +158,7 @@ class kube:
                if 'type' in node.metadata.labels:
                      if node.metadata.labels['type'] == 'test':
                            Test_node_name = node.metadata.name
-              else:
+               else:
                  nontestnode_list.append(node.metadata.name)
   
             # Create node affinity object to send to K8 master

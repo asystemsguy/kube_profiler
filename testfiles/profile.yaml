@@ -119,25 +119,6 @@ services:
                 target_throughput: 300
                 target_latency: 0.5 
     - service:
-            port: 12345
-            name: 'ts-station-service'
-            data:
-            - type:
-                name : pystr
-            endpoints:
-            - endpoint:
-                 method: 'POST'
-                 name: '/station/exist'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5 
-            - endpoint:
-                 method: 'GET'
-                 name: '/station/query'
-                 header: ""
-                 target_throughput: 300
-                 target_latency: 0.5 
-    - service:
             port: 14567
             name: 'ts-train-service'
             data:

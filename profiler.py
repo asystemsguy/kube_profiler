@@ -23,8 +23,9 @@ class profiler:
                     config = yaml.safe_load(stream)
 
                     self.total_req = config['total_req']
-                    self.timeout = config['timeout']
-                      
+                    self.timeout = config['timeout']  
+                    self.plat.timeout = self.timeout 
+
                     min_value = config['resources']['conn_reqs']['min']
                     max_value = config['resources']['conn_reqs']['max']
                     interval_value = config['resources']['conn_reqs']['interval']

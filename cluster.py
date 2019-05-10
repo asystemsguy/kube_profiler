@@ -2,9 +2,9 @@ import os
 import json
 import time
 import requests
-import subprocess
 import shutil
 from faker_schema.faker_schema import FakerSchema
+import util
 
 class service:
       def __init__(self,name,port,data,endpoints,platform):
@@ -38,23 +38,30 @@ class service:
                   except Exception as e:
                     print(e)
 
-      def wait(self):
+      def wait(self,timeout):
             service_up = -1
+            time_start = time.time()
             while(service_up != 1):                       
+                  if time.time() > time_start+timeout :
+                       return False
                   time.sleep(3)
                   service_up = self.platform.get_instance_count(self,"default")
-                  if(service_up == 0.0):
-                      print("number of available instances of "+self.name+" :"+str(service_up))
+                  #if(service_up == 0.0):
+                      #print("number of available instances of "+self.name+" :"+str(service_up))
 
             sleep_time = 1
             status_code = 0
+            time_start = time.time()
             while(status_code != 200):      
                   try:
-                      status_code = requests.get(self.url+"/welcome",timeout=None).status_code
+                      status_code = requests.get(self.url+"/welcome",timeout=timeout).status_code
                   except requests.exceptions.ConnectionError:
+                       if time.time() > time_start+timeout :
+                               return False
                        sleep_time = sleep_time+2
-                       print("service "+self.name+" responding with code "+str(status_code)+" trying again ... after "+str(sleep_time)+" secs")
+                       #print("service "+self.name+" responding with code "+str(status_code)+" trying again ... after "+str(sleep_time)+" secs")
                        time.sleep(sleep_time)
+            return True
       def get_sign(self):
              return "sev_"+self.name
                  
@@ -83,11 +90,10 @@ class endpoint:
                  self.service.generate_fake_data(datafilename)
 
               # wait for the service to come up
-              self.service.wait()
-
-              loadgen_cmd = self.get_load_command(total_req,con_req,timeout,datafilename)
-
-              return subprocess.check_output([loadgen_cmd], shell=True,timeout=timeout) 
+              if self.service.wait(timeout):
+                   return util.run_cmd(self.get_load_command(total_req,con_req,timeout,datafilename),timeout)
+              else:
+                   return ""
 
         def get_sign(self):
               return "_api_"+self.name.replace("/", "_")+"_m_"+self.method

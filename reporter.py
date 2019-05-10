@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import time
+import math
 
 class reporter:
     def __init__(self,total_req):
@@ -38,14 +39,15 @@ class reporter:
                 responses.setdefault(item.split()[0], []).append(float(item.split()[1]))
         return [throughput,latency,responses]
 
-    def process(self,key,output):
+    def process(self,endpoint,key,output):
 
           self.slos_dict[key] = self.extract_hey_output(output)  
           self.throughput_values.append(self.slos_dict[key][0])
           self.latency_values.append(self.slos_dict[key][1])
           self.keys.append(key)
           if '[200]' in self.slos_dict[key][2]:
-              self.errors.append(self.total_req-self.slos_dict[key][2]['[200]'][0])
+              total_actual_reqs = math.floor(self.total_req/endpoint.max_conn_requests)*endpoint.max_conn_requests
+              self.errors.append(total_actual_reqs-self.slos_dict[key][2]['[200]'][0])
           else:
               self.errors.append(self.total_req)
 
@@ -94,10 +96,12 @@ class reporter:
 
     def dump_data(self,filename):
         try:
-            with open('output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt', 'w+') as file:
+            filecompletename = 'output/data/data_'+filename+"_t_"+time.strftime("%Y%m%d-%H%M%S")+'.txt'
+            with open(filecompletename, 'w+') as file:
               self.dump_throughput_values(file)
               self.dump_latency_values(file)
               self.dump_errors(file)
+              print("results are in ",filecompletename)
         except Exception as e:
             print(e)
 

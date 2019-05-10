@@ -1,5 +1,4 @@
 import time
-import subprocess
 import numpy as np
 from tqdm import tqdm
 from reporter import reporter
@@ -50,7 +49,8 @@ class resource:
                                 continue
 
                             # process the output from load
-                            report.process(key,output)                         
+                            if output != "":
+                               report.process(endpoint,key,output)                         
                             
                             # Timeout may due to delay in startup of the service etc.
                             if time.time() > timeout_t:
@@ -135,7 +135,8 @@ class max_conn_requests(resource):
                                      break
 
                             # process the output from load
-                            report.process(key,output)                         
+                            if output != "":
+                               report.process(endpoint,key,output)                         
                             
                             # Timeout may due to delay in startup of the service etc.
                             if time.time() > timeout_t:

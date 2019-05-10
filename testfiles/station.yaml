@@ -1,18 +1,18 @@
-total_req: 100
-timeout: 60
+total_req: 1000
+timeout: 100
 resources:
    conn_reqs:        
         min: 1
-        interval: 20
-        max: 100
+        interval: 100
+        max: 200
    cpu:
         max: 2
-        min: 0.1
-        interval: 0.4
+        min: 2
+        interval: 2
    mem:
         max: 6000
-        min: 1000
-        interval: 1000
+        min: 6000
+        interval: 6000
 services:
    - service:
         port: 12345
@@ -29,21 +29,21 @@ services:
              header: 'Content-Type: application/json'
              target_throughput: 300
              target_latency: 0.5
-        - endpoint:
-             method: 'POST'
-             name: '/station/exist'
-             header: 'Content-Type: application/json'
-             target_throughput: 300
-             target_latency: 0.5
-        - endpoint:
-             method: 'GET'
-             name: '/station/query'
-             header: ""
-             target_throughput: 300
-             target_latency: 0.5   
-        - endpoint:
-             method: 'POST'
-             name: '/station/delete'
-             header: 'Content-Type: application/json'
-             target_throughput: 300
-             target_latency: 0.5
+ #       - endpoint:
+ #            method: 'POST'
+ #            name: '/station/exist'
+ #            header: 'Content-Type: application/json'
+ #            target_throughput: 300
+ #            target_latency: 0.5
+ #       - endpoint:
+ #            method: 'GET'
+ #            name: '/station/query'
+ #            header: ""
+ #            target_throughput: 300
+ #            target_latency: 0.5   
+ #       - endpoint:
+ #            method: 'POST'
+ #            name: '/station/delete'
+ #            header: 'Content-Type: application/json'
+ #            target_throughput: 300
+ #            target_latency: 0.5

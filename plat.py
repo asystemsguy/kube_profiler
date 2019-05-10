@@ -121,7 +121,7 @@ class kube:
             affinity.required_during_scheduling_ignored_during_execution = required_during_scheduling_ignored_during_execution
 
             # update the spec
-            deployment.spec.template.spec.affinity = affinity
+            deployment.spec.template.spec.affinity.node_affinity = affinity
 
             # Update the spec
             # Retry for 5 times if conflit exception happens due to quick change in resources
@@ -143,6 +143,7 @@ class kube:
                           time.sleep(5)
 
                  break
+            print(api_response)
             print(self.get_deployment(service,namespace).spec.template.spec.affinity)
             self.current_test_service = service
 

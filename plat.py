@@ -93,13 +93,32 @@ class kube:
                           time.sleep(5)
                  break
 
+    def get_node_selector_obj(self,service,nodelist):
+
+            deployment = self.get_deployment(service,namespace)
+
+            node_selector_terms  = client.models.v1_node_selector_term.V1NodeSelectorTerm()
+            node_selector_terms.match_expressions = [client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[])] 
+            required_during_scheduling_ignored_during_execution = client.models.v1_node_selector.V1NodeSelector([node_selector_terms])
+            required_during_scheduling_ignored_during_execution.node_selector_terms = [node_selector_terms]
+            affinity = client.models.v1_node_affinity.V1NodeAffinity()
+            affinity.required_during_scheduling_ignored_during_execution = required_during_scheduling_ignored_during_execution
+
+            # update the spec
+            deployment.spec.template.spec.affinity = client.models.v1_affinity.V1Affinity()
+            deployment.spec.template.spec.affinity.node_affinity = affinity
+            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].key = 'kubernetes.io/hostname'
+            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].operator = 'In'
+            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].values = nodelist
+
+            return deployment
+    
     def assain_service_to_testVM(self,service,namespace="default"):
 
             self.remove_service_from_testVM(self.current_test_service)
 
             time.sleep(10)
             
-            deployment = self.get_deployment(service,namespace)
 
             # get list of nodes that are not labeled test or load
             nontestnode_list = []
@@ -114,21 +133,10 @@ class kube:
                    # Create node affinity object to send to K8 master
             print("Moving the node ",Test_node_name)
 
-            node_selector_terms  = client.models.v1_node_selector_term.V1NodeSelectorTerm()
-            node_selector_terms.match_expressions = [client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[Test_node_name])] 
-            required_during_scheduling_ignored_during_execution = client.models.v1_node_selector.V1NodeSelector([node_selector_terms])
-            required_during_scheduling_ignored_during_execution.node_selector_terms = [node_selector_terms]
-            affinity = client.models.v1_node_affinity.V1NodeAffinity()
-            affinity.required_during_scheduling_ignored_during_execution = required_during_scheduling_ignored_during_execution
-
-            # update the spec
-            deployment.spec.template.spec.affinity.node_affinity = affinity
-            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].key = 'kubernetes.io/hostname'
-            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].operator = 'In'
-            deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].values = [Test_node_name]
+            deployment = get_node_selector_obj(service,[Test_node_name])
+           
             # Update the spec
             # Retry for 5 times if conflit exception happens due to quick change in resources
-            print(deployment.spec.template.spec.affinity)
             count = 0
             while True:
                  try:
@@ -137,7 +145,7 @@ class kube:
                             namespace=namespace,
                             body=deployment)
                  except Exception as e:
-                          deployment = self.get_deployment(service,namespace)
+                          deployment = get_node_selector_obj(service,[Test_node_name])
                           if deployment is None:
                               return
                           deployment.spec.template.spec.affinity = affinity
@@ -169,16 +177,7 @@ class kube:
   
             print("Removing the service from ",Test_node_name)
 
-            # Create node affinity object to send to K8 master
-            affinity = client.models.v1_node_affinity.V1NodeAffinity()
-            node_selector_terms  = client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',nontestnode_list)
-            node_selector_terms.match_expressions = client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',nontestnode_list) 
-            required_during_scheduling_ignored_during_execution = client.models.v1_node_selector.V1NodeSelector([node_selector_terms])
-            required_during_scheduling_ignored_during_execution.node_selector_terms = [node_selector_terms]
-            affinity.required_during_scheduling_ignored_during_execution = required_during_scheduling_ignored_during_execution
-
-            # update the spec
-            deployment.spec.template.spec.affinity = affinity
+            deployment = get_node_selector_obj(service,nontestnode_list)
 
             # Update the spec
             # Retry for 5 times if conflit exception happens due to quick change in resources
@@ -190,7 +189,7 @@ class kube:
                             namespace=namespace,
                             body=deployment)
                  except Exception as e:
-                          deployment = self.get_deployment(service,namespace)
+                          deployment = get_node_selector_obj(service,nontestnode_list)
                           if deployment is None:
                               return
                           deployment.spec.template.spec.affinity = affinity
@@ -200,7 +199,6 @@ class kube:
                           time.sleep(5)
 
                  break
-            print(self.get_deployment(service,namespace).spec.template.spec.affinity)
 
 
 

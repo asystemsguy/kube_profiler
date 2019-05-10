@@ -15,6 +15,122 @@ resources:
         interval: 1000
 services:
     - service:
+            port: 12346
+            name: 'ts-travel-service'
+            data:
+             - type:
+                tripId : pystr
+                trainTypeId : pystr
+                routeId: pystr
+                startingStationId: pystr
+                stationsId: pystr
+                terminalStationId: pystr
+                startingTime: date
+                endTime: date
+                startingPlace: pystr
+                endPlace: pystr
+                departureTime: date
+                travelDate: date
+                from: pystr
+                to: pystr
+                routeIds: pylist(10, False, 'str')
+            endpoints:
+            - endpoint:
+                 method: 'POST'
+                 name: '/travel/getTripsByRouteId'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
+                 name: '/travel/create'
+                 header: 'Content-Type: application/json'
+                 data:
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
+                 name: '/travel/retrieve'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
+                 name: '/travel/update'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
+                 name: '/travel/delete'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
+                 name: '/travel/query'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
+                 name: '/travel/queryWithPackage'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
+                 name: '/travel/getTripAllDetailInfo'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'GET'
+                 name: '/travel/queryAll'
+                 header: ""
+                 target_throughput: 300
+                 target_latency: 0.5
+    - service:
+        port: 14567
+        name: 'ts-train-service'
+        data:
+        - type:
+            id : pystr
+            economyClass: pyint
+            confortClass: pyint
+            averageSpeed: pyint
+        endpoints:
+        - endpoint:
+             method: 'POST'
+             name: '/train/create'
+             header: 'Content-Type: application/json'
+             target_throughput: 300
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/train/retrieve'
+             header: 'Content-Type: application/json'
+             target_throughput: 300
+             target_latency: 0.5
+        - endpoint:
+             method: 'GET'
+             name: '/train/query'
+             header: ""
+             target_throughput: 300
+             target_latency: 0.5 
+        - endpoint:
+             method: 'POST'
+             name: '/train/update'
+             header: 'Content-Type: application/json'
+             target_throughput: 300
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/train/delete'
+             header: 'Content-Type: application/json'
+             target_throughput: 300
+             target_latency: 0.5
+    - service:
             port: 12345
             name: 'ts-station-service'
             data:
@@ -43,6 +159,12 @@ services:
                  target_latency: 0.5   
             - endpoint:
                  method: 'POST'
+                 name: '/station/update'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
                  name: '/station/delete'
                  header: 'Content-Type: application/json'
                  target_throughput: 300
@@ -50,6 +172,11 @@ services:
     - service:
             port: 11188
             name: 'ts-security-service'
+            data:
+            - type:
+                name : pystr
+                value : pystr
+                description: pyint
             endpoints:
             - endpoint:
                 method: 'GET'
@@ -57,37 +184,30 @@ services:
                 header: ""
                 target_throughput: 300
                 target_latency: 0.5
-    - service:
-            port: 12031
-            name: 'ts-order-service'
-            endpoints:
             - endpoint:
-                method: 'GET'
-                name: '/order/findAll'
-                header: ""
-                target_throughput: 300
-                target_latency: 0.5
-
-    - service:
-            port: 12032
-            name: 'ts-order-other-service'
-            endpoints:
+                 method: 'POST'
+                 name: '/securityConfig/create'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
             - endpoint:
-                method: 'GET'
-                name: '/orderOther/findAll'
-                header: ""
-                target_throughput: 300
-                target_latency: 0.5
-    - service:
-            port: 12346
-            name: 'ts-travel-service'
-            endpoints:
+                 method: 'POST'
+                 name: '/securityConfig/check'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
             - endpoint:
-                method: 'GET'
-                name: '/travel/queryAll'
-                header: ""
-                target_throughput: 300
-                target_latency: 0.5
+                 method: 'POST'
+                 name: '/securityConfig/update'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
+            - endpoint:
+                 method: 'POST'
+                 name: '/securityConfig/delete'
+                 header: 'Content-Type: application/json'
+                 target_throughput: 300
+                 target_latency: 0.5
     - service:
             port: 16346
             name: 'ts-travel2-service'
@@ -119,25 +239,6 @@ services:
                 target_throughput: 300
                 target_latency: 0.5 
     - service:
-            port: 14567
-            name: 'ts-train-service'
-            data:
-            - type:
-                id : pystr
-            endpoints:
-            - endpoint:
-                 method: 'POST'
-                 name: '/train/retrieve'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'GET'
-                 name: '/train/query'
-                 header: ""
-                 target_throughput: 300
-                 target_latency: 0.5 
-    - service:
             port: 15679
             name: 'ts-config-service'
             data:
@@ -166,6 +267,26 @@ services:
                  header: ""
                  target_throughput: 300
                  target_latency: 0.5
+    - service:
+        port: 12031
+        name: 'ts-order-service'
+        endpoints:
+        - endpoint:
+            method: 'GET'
+            name: '/order/findAll'
+            header: ""
+            target_throughput: 300
+            target_latency: 0.5
+    - service:
+            port: 12032
+            name: 'ts-order-other-service'
+            endpoints:
+            - endpoint:
+                method: 'GET'
+                name: '/orderOther/findAll'
+                header: ""
+                target_throughput: 300
+                target_latency: 0.5
     - service:
             port: 12349
             name: 'ts-sso-service'

@@ -52,7 +52,6 @@ class profiler:
                          schema = []
                          if 'data' in service_conf['service']:
                              schema = service_conf['service']['data'][0]['type']
-
                          endpoints = []
                          for endpoint_conf in service_conf['service']['endpoints']:
                              method = endpoint_conf['endpoint']['method']

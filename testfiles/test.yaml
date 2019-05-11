@@ -19,28 +19,27 @@ services:
             name: 'ts-travel-service'
             data:
               - type:
-                tripId : pystr
-                trainTypeId : pystr
-                routeId: pystr
-                startingStationId: pystr
-                stationsId: pystr
-                terminalStationId: pystr
-                startingTime: date
-                endTime: date
-                startingPlace: pystr
-                endPlace: pystr
-                departureTime: date
-                travelDate: date
-                from: pystr
-                to: pystr
-                routeIds: pylist(10, False, 'str')
+                  tripId : pystr
+                  trainTypeId : pystr
+                  routeId: pystr
+                  startingStationId: pystr
+                  stationsId: pystr
+                  terminalStationId: pystr
+                  startingTime: unix_time
+                  endTime: unix_time
+                  startingPlace: pystr
+                  endPlace: pystr
+                  departureTime: unix_time
+                  travelDate: unix_time
+                  from: pystr
+                  to: pystr
             endpoints:
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/getTripsByRouteId'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5
+#            - endpoint:
+#                 method: 'POST'
+#                 name: '/travel/getTripsByRouteId'
+#                 header: 'Content-Type: application/json'
+#                 target_throughput: 300
+#                 target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/create'

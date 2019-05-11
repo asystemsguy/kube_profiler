@@ -87,7 +87,6 @@ class endpoint:
               return loadgen_cmd
 
         def gen_load(self,total_req,con_req,timeout,datafilename):
-
               if self.header != "":
                  self.service.generate_fake_data(datafilename)
 
@@ -105,8 +104,9 @@ class service_data:
             self.schema = schema
             self.total_req = total_req
 
-       def generate_data(self,file_name): 
+       def generate_data(self,file_name):
              faker = FakerSchema()
+
              data = faker.generate_fake(self.schema, iterations=self.total_req)
              with open(file_name, 'w') as f:
                    for item in data:

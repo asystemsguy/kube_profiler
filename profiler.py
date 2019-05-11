@@ -57,8 +57,10 @@ class profiler:
                          for endpoint_conf in service_conf['service']['endpoints']:
                              method = endpoint_conf['endpoint']['method']
                              endpoint_name = endpoint_conf['endpoint']['name']
+                             print(endpoint_conf['endpoint'])
                              headers = endpoint_conf['endpoint']['header']
                              target_throughput = endpoint_conf['endpoint']['target_throughput']
+                             print(endpoint_conf['endpoint'])
                              target_latency = endpoint_conf['endpoint']['target_latency']
                              endpoints.append(endpoint(endpoint_name,method,headers,target_throughput,target_latency))
                     

@@ -93,7 +93,7 @@ class kube:
                           time.sleep(5)
                  break
 
-    def get_node_selector_obj(self,service,nodelist):
+    def get_node_selector_obj(self,nodelist,service,namespace="default"):
 
             deployment = self.get_deployment(service,namespace)
 
@@ -133,7 +133,7 @@ class kube:
                    # Create node affinity object to send to K8 master
             print("Moving the node ",Test_node_name)
 
-            deployment = get_node_selector_obj(service,[Test_node_name])
+            deployment = self.get_node_selector_obj([Test_node_name],service)
            
             # Update the spec
             # Retry for 5 times if conflit exception happens due to quick change in resources
@@ -155,8 +155,6 @@ class kube:
                           time.sleep(5)
 
                  break
-            print(api_response)
-            print(self.get_deployment(service,namespace).spec.template.spec.affinity)
             self.current_test_service = service
 
 
@@ -177,7 +175,7 @@ class kube:
   
             print("Removing the service from ",Test_node_name)
 
-            deployment = get_node_selector_obj(service,nontestnode_list)
+            deployment = self.get_node_selector_obj(nontestnode_list,service)
 
             # Update the spec
             # Retry for 5 times if conflit exception happens due to quick change in resources

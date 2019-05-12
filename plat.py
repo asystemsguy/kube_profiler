@@ -40,6 +40,8 @@ class kube:
            deployment = self.get_deployment(service,namespace)
            if deployment is None:
                return
+           print(type(deployment.spec.template.spec.container[0].resources))
+           
            deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
 
            # Retry for 5 times if conflit exception happens due to quick change in resources

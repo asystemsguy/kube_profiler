@@ -429,85 +429,85 @@ services:
     #             header: 'Content-Type: application/json'
     #             target_throughput: 300
     #             target_latency: 0.5 
-    - service:
-        port: 12349
-        name: 'ts-sso-service'
-        data:
-         - type:
-            accountId : uuid
-            newEmail : email
-            newPassword : pystr
-            newName : pystr
-            newGender : pyint
-            newDocumentType : pyint
-            newDocumentNumber: pystr
-            password: pystr
-            gender: pyint
-            name: pystr
-            documentType: pyint
-            documentNum: pystr
-            email: email
-            verificationCode: pystr
-            id: uuid
-            token: pystr
-            loginToken: pystr
-            documentNumber: pyint
-            phoneNumber: pystr
-        endpoints:
-        - endpoint:
-            method: 'GET'
-            name: '/account/findAll'
-            header: ""
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'GET'
-            name: '/account/findAllLogin'
-            header: ""
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/account/modify'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/account/register'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/account/login'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/logout'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/account/findById'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/account/adminlogin'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/account/admindelete'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
+    # - service:
+    #     port: 12349
+    #     name: 'ts-sso-service'
+    #     data:
+    #      - type:
+    #         accountId : uuid
+    #         newEmail : email
+    #         newPassword : pystr
+    #         newName : pystr
+    #         newGender : pyint
+    #         newDocumentType : pyint
+    #         newDocumentNumber: pystr
+    #         password: pystr
+    #         gender: pyint
+    #         name: pystr
+    #         documentType: pyint
+    #         documentNum: pystr
+    #         email: email
+    #         verificationCode: pystr
+    #         id: uuid
+    #         token: pystr
+    #         loginToken: pystr
+    #         documentNumber: pyint
+    #         phoneNumber: pystr
+    #     endpoints:
+    #     - endpoint:
+    #         method: 'GET'
+    #         name: '/account/findAll'
+    #         header: ""
+    #         target_throughput: 300
+    #         target_latency: 0.5
+    #     - endpoint:
+    #         method: 'GET'
+    #         name: '/account/findAllLogin'
+    #         header: ""
+    #         target_throughput: 300
+    #         target_latency: 0.5
+    #     - endpoint:
+    #         method: 'POST'
+    #         name: '/account/modify'
+    #         header: 'Content-Type: application/json'
+    #         target_throughput: 300
+    #         target_latency: 0.5
+    #     - endpoint:
+    #         method: 'POST'
+    #         name: '/account/register'
+    #         header: 'Content-Type: application/json'
+    #         target_throughput: 300
+    #         target_latency: 0.5
+    #     - endpoint:
+    #         method: 'POST'
+    #         name: '/account/login'
+    #         header: 'Content-Type: application/json'
+    #         target_throughput: 300
+    #         target_latency: 0.5
+    #     - endpoint:
+    #         method: 'POST'
+    #         name: '/logout'
+    #         header: 'Content-Type: application/json'
+    #         target_throughput: 300
+    #         target_latency: 0.5
+    #     - endpoint:
+    #         method: 'POST'
+    #         name: '/account/findById'
+    #         header: 'Content-Type: application/json'
+    #         target_throughput: 300
+    #         target_latency: 0.5
+    #     - endpoint:
+    #         method: 'POST'
+    #         name: '/account/adminlogin'
+    #         header: 'Content-Type: application/json'
+    #         target_throughput: 300
+    #         target_latency: 0.5
+    #     - endpoint:
+    #         method: 'POST'
+    #         name: '/account/admindelete'
+    #         header: 'Content-Type: application/json'
+    #         target_throughput: 300
+    #         target_latency: 0.5
 
     - service:
         port: 14322

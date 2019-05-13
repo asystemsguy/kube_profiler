@@ -40,9 +40,8 @@ class kube:
            deployment = self.get_deployment(service,namespace)
            if deployment is None:
                return
-           print(type(deployment.spec.template.spec.container[0].resources))
            
-           deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
+           deployment.spec.template.spec.containers[0].resources.limits = dict([('memory',mem)])
 
            # Retry for 5 times if conflit exception happens due to quick change in resources
            count = 0
@@ -56,7 +55,7 @@ class kube:
                           deployment = self.get_deployment(service,namespace)
                           if deployment is None:
                               return
-                          deployment.spec.template.spec.containers[0].resources.limits['memory'] = mem
+                          deployment.spec.template.spec.containers[0].resources.limits = dict([('memory',mem)])
                           if count > 5:
                               break
                           count = count + 1
@@ -74,7 +73,8 @@ class kube:
            deployment = self.get_deployment(service,namespace)
            if deployment is None:
               return 
-           deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
+
+           deployment.spec.template.spec.containers[0].resources.limits = dict([('cpu',cpu)])
 
            # Retry for 5 times if conflit exception happens due to quick change in resources
            count = 0
@@ -88,7 +88,7 @@ class kube:
                           deployment = self.get_deployment(service,namespace)
                           if deployment is None:
                               return
-                          deployment.spec.template.spec.containers[0].resources.limits['cpu'] = cpu
+                          deployment.spec.template.spec.containers[0].resources.limits = dict([('cpu',cpu)])
                           if count > 5:
                               break
                           count = count + 1

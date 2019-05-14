@@ -1,5 +1,5 @@
 total_req: 1000
-timeout: 100
+timeout: 150
 resources:
    conn_reqs:        
         min: 1
@@ -34,12 +34,12 @@ services:
                   from: pystr
                   to: pystr
             endpoints:
-#            - endpoint:
-#                 method: 'POST'
-#                 name: '/travel/getTripsByRouteId'
-#                 header: 'Content-Type: application/json'
-#                 target_throughput: 300
-#                 target_latency: 0.5
+           # - endpoint:
+           #      method: 'POST'
+           #      name: '/travel/getTripsByRouteId'
+           #      header: 'Content-Type: application/json'
+           #      target_throughput: 300
+           #      target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/create'
@@ -47,45 +47,45 @@ services:
                  data:
                  target_throughput: 300
                  target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/retrieve'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/update'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/delete'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/query'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/queryWithPackage'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/getTripAllDetailInfo'
-                 header: 'Content-Type: application/json'
-                 target_throughput: 300
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'GET'
-                 name: '/travel/queryAll'
-                 header: ""
-                 target_throughput: 300
-                 target_latency: 0.5
+           # - endpoint:
+           #      method: 'POST'
+           #      name: '/travel/retrieve'
+           #      header: 'Content-Type: application/json'
+           #       target_throughput: 300
+           #       target_latency: 0.5
+           #  - endpoint:
+           #       method: 'POST'
+           #       name: '/travel/update'
+           #       header: 'Content-Type: application/json'
+           #       target_throughput: 300
+           #       target_latency: 0.5
+           #  - endpoint:
+           #       method: 'POST'
+           #       name: '/travel/delete'
+           #       header: 'Content-Type: application/json'
+           #       target_throughput: 300
+           #       target_latency: 0.5
+           #  - endpoint:
+           #       method: 'POST'
+           #       name: '/travel/query'
+           #       header: 'Content-Type: application/json'
+           #       target_throughput: 300
+           #       target_latency: 0.5
+           #  - endpoint:
+           #       method: 'POST'
+           #       name: '/travel/queryWithPackage'
+           #       header: 'Content-Type: application/json'
+           #       target_throughput: 300
+           #       target_latency: 0.5
+           #  - endpoint:
+           #       method: 'POST'
+           #       name: '/travel/getTripAllDetailInfo'
+           #       header: 'Content-Type: application/json'
+           #       target_throughput: 300
+           #       target_latency: 0.5
+           #  - endpoint:
+           #       method: 'GET'
+           #       name: '/travel/queryAll'
+           #       header: ""
+           #       target_throughput: 300
+           #       target_latency: 0.5

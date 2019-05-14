@@ -36,12 +36,12 @@ class profiler:
                     min_value = config['resources']['cpu']['min']
                     max_value = config['resources']['cpu']['max']
                     interval_value = config['resources']['cpu']['interval']
-                    self.resources.append(cpu(min_value,max_value,interval_value,self.plat))
+                    # self.resources.append(cpu(min_value,max_value,interval_value,self.plat))
                     
                     min_value = config['resources']['mem']['min']
                     max_value = config['resources']['mem']['max']
                     interval_value = config['resources']['mem']['interval']
-                    self.resources.append(memory(min_value,max_value,interval_value,self.plat))
+                    # self.resources.append(memory(min_value,max_value,interval_value,self.plat))
 
                   
                     for service_conf in config['services']:

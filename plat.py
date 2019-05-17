@@ -98,7 +98,16 @@ class kube:
     def get_node_selector_obj(self,nodelist,service,namespace="default"):
 
             deployment = self.get_deployment(service,namespace)
+            
 
+            # add required tolerations
+            toleration = client.models.v1_toleration.V1Toleration()
+            toleration.effect = "NoSchedule"
+            toleration.key = "dedicated"
+            toleration.value = "test"
+            toleration.operator = "Equal"
+
+            # add required node affinities
             node_selector_terms  = client.models.v1_node_selector_term.V1NodeSelectorTerm()
             node_selector_terms.match_expressions = [client.models.v1_node_selector_requirement.V1NodeSelectorRequirement('kubernetes.io/hostname','In',[])] 
             required_during_scheduling_ignored_during_execution = client.models.v1_node_selector.V1NodeSelector([node_selector_terms])
@@ -112,6 +121,8 @@ class kube:
             deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].key = 'kubernetes.io/hostname'
             deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].operator = 'In'
             deployment.spec.template.spec.affinity.node_affinity.required_during_scheduling_ignored_during_execution.node_selector_terms[0].match_expressions[0].values = nodelist
+            deployment.spec.template.spec.tolerations = [toleration]
+            
 
             return deployment
     
@@ -147,10 +158,9 @@ class kube:
                             namespace=namespace,
                             body=deployment)
                  except Exception as e:
-                          deployment = get_node_selector_obj(service,[Test_node_name])
+                          deployment = self.get_node_selector_obj([Test_node_name],service)
                           if deployment is None:
                               return
-                          deployment.spec.template.spec.affinity = affinity
                           if count > 5:
                               break
                           count = count + 1
@@ -178,7 +188,8 @@ class kube:
             print("Removing the service from ",Test_node_name)
 
             deployment = self.get_node_selector_obj(nontestnode_list,service)
-
+            deployment.spec.template.spec.tolerations = []
+            
             # Update the spec
             # Retry for 5 times if conflit exception happens due to quick change in resources
             count = 0
@@ -189,10 +200,10 @@ class kube:
                             namespace=namespace,
                             body=deployment)
                  except Exception as e:
-                          deployment = get_node_selector_obj(service,nontestnode_list)
+                          deployment = self.get_node_selector_obj(nontestnode_list,service)
+                          deployment.spec.template.spec.tolerations = []
                           if deployment is None:
                               return
-                          deployment.spec.template.spec.affinity = affinity
                           if count > 5:
                               break
                           count = count + 1

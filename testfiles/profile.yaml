@@ -18,22 +18,21 @@ services:
     #         port: 12346
     #         name: 'ts-travel-service'
     #         data:
-    #          - type:
-    #             tripId : pystr
-    #             trainTypeId : pystr
-    #             routeId: pystr
-    #             startingStationId: pystr
-    #             stationsId: pystr
-    #             terminalStationId: pystr
-    #             startingTime: date
-    #             endTime: date
-    #             startingPlace: pystr
-    #             endPlace: pystr
-    #             departureTime: date
-    #             travelDate: date
-    #             from: pystr
-    #             to: pystr
-    #             routeIds: pylist
+               # - type:
+               #    tripId : "G,pystr"
+               #    trainTypeId : pystr
+               #    routeId: pystr
+               #    startingStationId: pystr
+               #    stationsId: pystr
+               #    terminalStationId: pystr
+               #    startingTime: unix_time
+               #    endTime: unix_time
+               #    startingPlace: "Shang Hai Hong Qiao"
+               #    endPlace: "Shi Jia Zhuang"
+               #    departureTime: unix_time
+               #    travelDate: unix_time
+               #    from: pystr
+               #    to: pystr
     #         endpoints:
     #         - endpoint:
     #              method: 'POST'
@@ -174,6 +173,9 @@ services:
     #         name: 'ts-security-service'
     #         data:
     #         - type:
+    #             accountId: "d4dab665-82a1-47af-b4f9-bace2f0c3d83"
+    #             id: "d4dab665-82a1-47af-b4f9-bace2f0c3d83"
+    #             checkDate: unix_time
     #             name : pystr
     #             value : pystr
     #             description: pyint
@@ -254,22 +256,21 @@ services:
     #     port: 16346
     #     name: 'ts-travel2-service'
     #     data:
-    #      - type:
-    #         tripId : pystr
-    #         trainTypeId : pystr
-    #         routeId: pystr
-    #         startingStationId: pystr
-    #         stationsId: pystr
-    #         terminalStationId: pystr
-    #         startingTime: date
-    #         endTime: date
-    #         startingPlace: pystr
-    #         endPlace: pystr
-    #         departureTime: date
-    #         travelDate: date
-    #         from: pystr
-    #         to: pystr
-    #         routeIds: pylist
+    #        - type:
+    #           tripId : "Z,pystr"
+    #           trainTypeId : pystr
+    #           routeId: pystr
+    #           startingStationId: pystr
+    #           stationsId: pystr
+    #           terminalStationId: pystr
+    #           startingTime: unix_time
+    #           endTime: unix_time
+    #           startingPlace: "Shang Hai Hong Qiao"
+    #           endPlace: "Shi Jia Zhuang"
+    #           departureTime: unix_time
+    #           travelDate: unix_time
+    #           from: pystr
+    #           to: pystr
     #     endpoints:
     #     - endpoint:
     #          method: 'POST'
@@ -371,180 +372,193 @@ services:
     #             header: 'Content-Type: application/json'
     #             target_throughput: 300
     #             target_latency: 0.5 
-    # - service:
-    #         port: 12347
-    #         name: 'ts-contacts-service'
-    #         data:
-    #         - type:
-    #             contactsId : pystr
-    #             name : pystr
-    #             documentType : pyint
-    #             documentNumber : pyint
-    #             phoneNumber : pystr
-    #             loginToken : pystr
-    #         endpoints:
-    #         - endpoint:
-    #             method: 'POST'
-    #             name: '/contacts/admincreate'
-    #             header: 'Content-Type: application/json'
-    #             target_throughput: 300
-    #             target_latency: 0.5 
-    #         - endpoint:
-    #              method: 'GET'
-    #              name: '/contacts/findAll'
-    #              header: ""
-    #              target_throughput: 300
-    #              target_latency: 0.5
-    #         - endpoint:
-    #             method: 'POST'
-    #             name: '/contacts/findContacts'
-    #             cookies:
-    #                - cookie : ''
-    #             header: 'Content-Type: application/json'
-    #             target_throughput: 300
-    #             target_latency: 0.5 
-    #         - endpoint:
-    #             method: 'POST'
-    #             name: '/contacts/getContactsById'
-    #             header: 'Content-Type: application/json'
-    #             target_throughput: 300
-    #             target_latency: 0.5 
-    #         - endpoint:
-    #             method: 'POST'
-    #             name: '/contacts/deleteContacts'
-    #             header: 'Content-Type: application/json'
-    #             target_throughput: 300
-    #             target_latency: 0.5 
-    #         - endpoint:
-    #             method: 'POST'
-    #             name: '/contacts/create'
-    #             cookies:
-    #                     - cookie : ''
-    #             header: 'Content-Type: application/json'
-    #             target_throughput: 300
-    #             target_latency: 0.5 
-    #         - endpoint:
-    #             method: 'POST'
-    #             name: '/contacts/modifyContacts'
-    #             header: 'Content-Type: application/json'
-    #             target_throughput: 300
-    #             target_latency: 0.5 
-    # - service:
-    #     port: 12349
-    #     name: 'ts-sso-service'
-    #     data:
-    #      - type:
-    #         accountId : uuid
-    #         newEmail : email
-    #         newPassword : pystr
-    #         newName : pystr
-    #         newGender : pyint
-    #         newDocumentType : pyint
-    #         newDocumentNumber: pystr
-    #         password: pystr
-    #         gender: pyint
-    #         name: pystr
-    #         documentType: pyint
-    #         documentNum: pystr
-    #         email: email
-    #         verificationCode: pystr
-    #         id: uuid
-    #         token: pystr
-    #         loginToken: pystr
-    #         documentNumber: pyint
-    #         phoneNumber: pystr
-    #     endpoints:
-    #     - endpoint:
-    #         method: 'GET'
-    #         name: '/account/findAll'
-    #         header: ""
-    #         target_throughput: 300
-    #         target_latency: 0.5
-    #     - endpoint:
-    #         method: 'GET'
-    #         name: '/account/findAllLogin'
-    #         header: ""
-    #         target_throughput: 300
-    #         target_latency: 0.5
-    #     - endpoint:
-    #         method: 'POST'
-    #         name: '/account/modify'
-    #         header: 'Content-Type: application/json'
-    #         target_throughput: 300
-    #         target_latency: 0.5
-    #     - endpoint:
-    #         method: 'POST'
-    #         name: '/account/register'
-    #         header: 'Content-Type: application/json'
-    #         target_throughput: 300
-    #         target_latency: 0.5
-    #     - endpoint:
-    #         method: 'POST'
-    #         name: '/account/login'
-    #         header: 'Content-Type: application/json'
-    #         target_throughput: 300
-    #         target_latency: 0.5
-    #     - endpoint:
-    #         method: 'POST'
-    #         name: '/logout'
-    #         header: 'Content-Type: application/json'
-    #         target_throughput: 300
-    #         target_latency: 0.5
-    #     - endpoint:
-    #         method: 'POST'
-    #         name: '/account/findById'
-    #         header: 'Content-Type: application/json'
-    #         target_throughput: 300
-    #         target_latency: 0.5
-    #     - endpoint:
-    #         method: 'POST'
-    #         name: '/account/adminlogin'
-    #         header: 'Content-Type: application/json'
-    #         target_throughput: 300
-    #         target_latency: 0.5
-    #     - endpoint:
-    #         method: 'POST'
-    #         name: '/account/admindelete'
-    #         header: 'Content-Type: application/json'
-    #         target_throughput: 300
-    #         target_latency: 0.5
+    - service:
+                port: 12347
+                name: 'ts-contacts-service'
+                data:
+                - type:
+                    contactsId : uuid4
+                    name : pystr
+                    documentType : pyint
+                    documentNumber : pyint
+                    phoneNumber : pystr
+                    loginToken : pystr
+                endpoints:
+                - endpoint:
+                    method: 'POST'
+                    name: '/contacts/admincreate'
+                    headers: 
+                        - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5 
+                - endpoint:
+                     method: 'GET'
+                     name: '/contacts/findAll'
+                     header: ""
+                     target_throughput: 300
+                     target_latency: 0.5
+                - endpoint:
+                    method: 'GET'
+                    name: '/contacts/findContacts'
+                    headers: 
+                        - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+                        - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5 
+                - endpoint:
+                    method: 'POST'
+                    name: '/contacts/getContactsById'
+                    headers: 
+                        - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5 
+                - endpoint:
+                    method: 'POST'
+                    name: '/contacts/deleteContacts'
+                    headers: 
+                        - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5 
+                - endpoint:
+                    method: 'POST'
+                    name: '/contacts/create'
+                    headers: 
+                        - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+                        - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5 
+                 - endpoint:
+                     method: 'POST'
+                     name: '/contacts/modifyContacts'
+                     headers: 
+                         - 'Content-Type: application/json'
+                     target_throughput: 300
+                     target_latency: 0.5 
+    - service:
+        port: 12349
+        name: 'ts-sso-service'
+        data:
+         - type:
+            accountId : uuid4
+            newEmail : email
+            newPassword : pystr
+            newName : pystr
+            newGender : pyint
+            newDocumentType : pyint
+            newDocumentNumber: pystr
+            password: pystr
+            gender: pyint
+            name: pystr
+            documentType: pyint
+            documentNum: pystr
+            email: email
+            verificationCode: pystr
+            id: uuid4
+            token: pystr
+            loginToken: pystr
+            documentNumber: pyint
+            phoneNumber: pystr
+        endpoints:
+        - endpoint:
+            method: 'GET'
+            name: '/account/findAll'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'GET'
+            name: '/account/findAllLogin'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/account/modify'
+            headers: 
+               - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/account/register'
+            headers: 
+               - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/account/login'
+            headers: 
+               - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/logout'
+            headers: 
+               - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/account/findById'
+            headers: 
+                - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/account/adminlogin'
+            headers: 
+                - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/account/admindelete'
+            headers: 
+                - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
 
     - service:
         port: 14322
         name: 'ts-travel-plan-service'
         data:
          - type:
-            startingPlace: pystr
-            endPlace: pystr
+            startingPlace: "Shi Jia Zhuang"
+            endPlace: "Shang Hai Hong Qiao"
             departureTime: unix_time
-            fromStationName: pystr
-            viaStationName: pystr
-            toStationName: pystr
+            fromStationName: "Ji Nan"
+            viaStationName: "Nan Jing"
+            toStationName: "Zhen Jiang"
             travelDate: unix_time
-            trainType: pystr
+            trainType: "G"
         endpoints:
-        - endpoint:
-            method: 'POST'
-            name: '/travelPlan/getTransferResult'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
+        # - endpoint:
+        #     method: 'POST'
+        #     name: '/travelPlan/getTransferResult'
+        #     headers: 
+        #        - 'Content-Type: application/json'
+        #     target_throughput: 300
+        #     target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/travelPlan/getCheapest'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/travelPlan/getQuickest'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/travelPlan/getMinStation'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
     - service:
@@ -552,37 +566,35 @@ services:
         name: 'ts-ticketinfo-service'
         data:
          - type:
-            name: pystr
-            startingPlace: pystr
-            endPlace: pystr
+            name: "Tai Yuan"
+            startingPlace: "Nan Jing"
+            endPlace: "Shang Hai"
             departureTime: unix_time
             trip: 
                 tripId:
-                    number: pystr
-                    type: 
-                        name: pystr
-                        index: pyint
-                trainTypeId: pystr
-                routeId: pystr
+                    trainNumber: "G,pystr"
+                trainTypeId: "ZhiDa"
                 startingStationId: pystr
                 stationsId: pystr
                 terminalStationId: pystr
                 startingTime: unix_time
                 endTime: unix_time
+                routeId: "0b23bd3e-876a-4af3-b920-c50a90c90b04"
         endpoints:
         - endpoint:
             method: 'POST'
             name: '/ticketinfo/queryForTravel'
-            header: 'Content-Type: application/json'
+            headers: 
+                - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/ticketinfo/queryForStationId'
-            header: 'Content-Type: application/json'
+            headers: 
+                - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
-
     - service:
         port: 18888
         name: 'ts-assurance-service'

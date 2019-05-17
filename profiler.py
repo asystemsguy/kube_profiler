@@ -13,7 +13,6 @@ class profiler:
 
        def run(self):
             for service in self.services:
-                
                 service.prepare_for_profiling()
                 for resource in self.resources: 
                      resource.profile(service,self.total_req,self.timeout)
@@ -56,13 +55,16 @@ class profiler:
                          for endpoint_conf in service_conf['service']['endpoints']:
                              method = endpoint_conf['endpoint']['method']
                              endpoint_name = endpoint_conf['endpoint']['name']
-                             headers = endpoint_conf['endpoint']['header']
+                             headers = []
+                             if 'headers' in endpoint_conf['endpoint']:
+                                     for header in endpoint_conf['endpoint']['headers']:
+                                           headers.append(header)
                              target_throughput = endpoint_conf['endpoint']['target_throughput']
                              target_latency = endpoint_conf['endpoint']['target_latency']
                              endpoints.append(endpoint(endpoint_name,method,headers,target_throughput,target_latency))
-                    
+                             print(endpoint_name,headers)    
                          self.services.append(service(service_name,port,service_data(schema,self.total_req),endpoints,self.plat))
-                
+
                 except yaml.YAMLError as e:
                    print(e)
 

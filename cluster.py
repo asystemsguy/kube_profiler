@@ -4,6 +4,7 @@ import time
 import requests
 import shutil
 from faker_schema.faker_schema import FakerSchema
+from faker import Faker
 import util
 
 class service:
@@ -68,10 +69,10 @@ class service:
              return "sev_"+self.name
                  
 class endpoint:
-        def __init__(self,name,method,header,target_throughput,target_latency):
+        def __init__(self,name,method,headers,target_throughput,target_latency):
             self.name = name
             self.method = method
-            self.header = header
+            self.headers = headers
             self.target_throughput = target_throughput
             self.target_latency = target_latency
             self.max_conn_requests = 0
@@ -80,14 +81,19 @@ class endpoint:
 
               loadgen_cmd = "hey -n "+str(total_req)+" -c "+str(con_req)+" -t "+str(timeout)+" -m "+self.method
                       
-              if self.header != "":
-                   loadgen_cmd = loadgen_cmd+" -H '"+self.header+"' -D fakedata/"+datafilename
-                        
+              if len(self.headers) > 0:
+                  for header in self.headers:
+                      loadgen_cmd = loadgen_cmd+" -H '"+header+"'"
+
+              if self.method != "GET":
+                   loadgen_cmd = loadgen_cmd+" -D fakedata/"+datafilename
+
               loadgen_cmd = loadgen_cmd+" "+self.service.url+self.name 
+              # print(loadgen_cmd)
               return loadgen_cmd
 
         def gen_load(self,total_req,con_req,timeout,datafilename):
-              if self.header != "":
+              if self.method != "GET":
                  self.service.generate_fake_data(datafilename)
 
               # wait for the service to come up
@@ -103,16 +109,20 @@ class service_data:
      def __init__(self,schema,total_req):
             self.schema = schema
             self.total_req = total_req
+            self._faker = Faker()
 
      def generate_data(self,file_name):
              faker = FakerSchema()
-
-             data = faker.generate_fake(self.schema, iterations=self.total_req)
+             data = self.generate_fake(self.schema, iterations=self.total_req)
              with open(file_name, 'w') as f:
                    for item in data:
                        json.dump(item,f)
                        f.write('\n') 
                        
+     def generate_fake(self, schema, iterations=1):
+        result = [self._generate_one_fake(schema) for _ in range(iterations)]
+        return result[0] if len(result) == 1 else result
+     
      def _generate_one_fake(self, schema):
         """
         Recursively traverse schema dictionary and for each "leaf node", evaluate the fake
@@ -130,6 +140,13 @@ class service_data:
             data[k] = self._generate_one_fake(v)
           elif isinstance(v, list):
             data[k] = [self._generate_one_fake(item) for item in v]
-          else:
-            data[k] = getattr(self._faker, v)()
+          else:  
+            args = v.split(',')
+            temp =''
+            for arg in args:
+                if hasattr(self._faker, arg): 
+                    temp = temp+str(getattr(self._faker, arg)())
+                else:
+                    temp = temp+arg
+            data[k] = temp
         return data

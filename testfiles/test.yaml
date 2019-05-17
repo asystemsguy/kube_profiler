@@ -1,5 +1,5 @@
 total_req: 1000
-timeout: 150
+timeout: 250
 resources:
    conn_reqs:        
         min: 1
@@ -15,77 +15,36 @@ resources:
         interval: 1000
 services:
     - service:
-            port: 12346
-            name: 'ts-travel-service'
-            data:
-              - type:
-                  tripId : pystr
-                  trainTypeId : pystr
-                  routeId: pystr
-                  startingStationId: pystr
-                  stationsId: pystr
-                  terminalStationId: pystr
-                  startingTime: unix_time
-                  endTime: unix_time
-                  startingPlace: pystr
-                  endPlace: pystr
-                  departureTime: unix_time
-                  travelDate: unix_time
-                  from: pystr
-                  to: pystr
-            endpoints:
-           # - endpoint:
-           #      method: 'POST'
-           #      name: '/travel/getTripsByRouteId'
-           #      header: 'Content-Type: application/json'
-           #      target_throughput: 300
-           #      target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/create'
-                 header: 'Content-Type: application/json'
-                 data:
-                 target_throughput: 300
-                 target_latency: 0.5
-           # - endpoint:
-           #      method: 'POST'
-           #      name: '/travel/retrieve'
-           #      header: 'Content-Type: application/json'
-           #       target_throughput: 300
-           #       target_latency: 0.5
-           #  - endpoint:
-           #       method: 'POST'
-           #       name: '/travel/update'
-           #       header: 'Content-Type: application/json'
-           #       target_throughput: 300
-           #       target_latency: 0.5
-           #  - endpoint:
-           #       method: 'POST'
-           #       name: '/travel/delete'
-           #       header: 'Content-Type: application/json'
-           #       target_throughput: 300
-           #       target_latency: 0.5
-           #  - endpoint:
-           #       method: 'POST'
-           #       name: '/travel/query'
-           #       header: 'Content-Type: application/json'
-           #       target_throughput: 300
-           #       target_latency: 0.5
-           #  - endpoint:
-           #       method: 'POST'
-           #       name: '/travel/queryWithPackage'
-           #       header: 'Content-Type: application/json'
-           #       target_throughput: 300
-           #       target_latency: 0.5
-           #  - endpoint:
-           #       method: 'POST'
-           #       name: '/travel/getTripAllDetailInfo'
-           #       header: 'Content-Type: application/json'
-           #       target_throughput: 300
-           #       target_latency: 0.5
-           #  - endpoint:
-           #       method: 'GET'
-           #       name: '/travel/queryAll'
-           #       header: ""
-           #       target_throughput: 300
-           #       target_latency: 0.5
+        port: 15681
+        name: 'ts-ticketinfo-service'
+        data:
+         - type:
+            name: "Tai Yuan"
+            startingPlace: "Nan Jing"
+            endPlace: "Shang Hai"
+            departureTime: unix_time
+            trip: 
+                tripId:
+                    trainNumber: "G,pystr"
+                trainTypeId: "ZhiDa"
+                startingStationId: pystr
+                stationsId: pystr
+                terminalStationId: pystr
+                startingTime: unix_time
+                endTime: unix_time
+                routeId: "0b23bd3e-876a-4af3-b920-c50a90c90b04"
+        endpoints:
+        - endpoint:
+            method: 'POST'
+            name: '/ticketinfo/queryForTravel'
+            headers: 
+                - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/ticketinfo/queryForStationId'
+            headers: 
+                - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5

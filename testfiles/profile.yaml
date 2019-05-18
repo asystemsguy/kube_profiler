@@ -823,6 +823,68 @@ services:
             target_latency: 0.5
 
     - service:
+        port: 18673
+        name: 'ts-inside-payment-service'
+        data:
+         - type:
+            orderId: uuid4
+            tripId: uuid4
+            userId: uuid4
+            money: pyint
+            price: pyint
+        endpoints:
+        - endpoint:
+            method: 'GET'
+            name: '/inside_payment/queryPayment'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'GET'
+            name: '/inside_payment/queryAccount'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'GET'
+            name: '/inside_payment/queryAddMoney'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/inside_payment/pay'
+            headers: 
+                - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+                - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/inside_payment/createAccount'
+            headers: 
+              - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/inside_payment/addMoney'
+            headers: 
+              - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/inside_payment/drawBack'
+            headers: 
+              - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/inside_payment/payDifference'
+            headers: 
+               - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+    - service:
         port: 18856
         name: 'ts-food-service'
         data:
@@ -878,87 +940,31 @@ services:
                  - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
-    - service:
-        port: 18673
-        name: 'ts-inside-payment-service'
-        data:
-         - type:
-            orderId: pystr
-            tripId: pystr
-            userId: pystr
-            money: pystr
-            price: pystr
-        endpoints:
-        - endpoint:
-            method: 'GET'
-            name: '/inside_payment/queryPayment'
-            header: ""
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'GET'
-            name: '/inside_payment/queryAccount'
-            header: ''
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'GET'
-            name: '/inside_payment/queryAddMoney'
-            header: ''
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/inside_payment/pay'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/inside_payment/createAccount'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/inside_payment/addMoney'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/inside_payment/drawBack'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/inside_payment/payDifference'
-            header: 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
 
     - service:
         port: 12342
         name: 'ts-login-service'
         data:
          - type:
-             email: pystr
+             email: email
              password: pystr
              verificationCode: pystr
-             id: pystr
+             id: uuid4
              token: pystr
         endpoints:
         - endpoint:
             method: 'POST'
             name: '/login'
-            header: 'Content-Type: application/json'
+            headers: 
+              - 'Cookie: YsbCaptcha=harsha'
+              - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/logout'
-            header: 'Content-Type: application/json'
+            headers: 
+              - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
     - service:
@@ -972,7 +978,7 @@ services:
              startingPlace: pystr
              endPlace: pystr
              startingTime: pystr
-             date: unix_date
+             date: unix_time
              seatClass: pystr
              seatNumber: pystr
              price: pystr
@@ -980,25 +986,29 @@ services:
         - endpoint:
             method: 'POST'
             name: '/notification/preserve_success'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/notification/order_create_success'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/notification/order_changed_success'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/notification/order_cancel_success'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
 
@@ -1007,19 +1017,19 @@ services:
         name: 'ts-preserve-service'
         data:
           - type:
-                contactsId: pystr
-                tripId: pystr
-                seatType: pyint
-                Date: unix_date;
+                contactsId: uuid4
+                tripId: uuid4
+                seatType: "1"
+                Date: unix_time
                 from: pystr
                 to: pyst
                 assurance: pyint
-                foodType: pyint
+                foodType: "1"
                 stationName: pystr
                 storeName: pystr
                 foodName: pystr
                 foodPrice: pyint
-                handleDate: pystr
+                handleDate: unix_time
                 consigneeName: pystr
                 consigneePhone: pystr
                 consigneeWeight: pyint
@@ -1028,22 +1038,20 @@ services:
         - endpoint:
             method: 'POST'
             name: '/preserve'
-            cookies:
-                    - cookie: 'loginId: pystr'
-                    - cookie: 'loginToken: pystr'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Content-Type: application/json'
+               - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
             target_throughput: 300
             target_latency: 0.5
-
     - service:
         port: 14569
         name: 'ts-preserve-other-service'
         data:
           - type:
-                contactsId: pystr
-                tripId: pystr
-                seatType: pyint
-                Date: unix_date;
+                contactsId: uuid4
+                tripId: uuid4
+                seatType: "1"
+                Date: unix_time
                 from: pystr
                 to: pyst
                 assurance: pyint
@@ -1052,7 +1060,7 @@ services:
                 storeName: pystr
                 foodName: pystr
                 foodPrice: pyint
-                handleDate: pystr
+                handleDate: unix_time
                 consigneeName: pystr
                 consigneePhone: pystr
                 consigneeWeight: pyint
@@ -1061,10 +1069,9 @@ services:
         - endpoint:
             method: 'POST'
             name: '/preserveOther'
-            cookies:
-                    - cookie: 'loginId: pystr'
-                    - cookie: 'loginToken: pystr'
-            header: 'Content-Type: application/json'
+            headers: 
+                - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+                - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5
     - service:

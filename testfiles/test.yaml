@@ -15,58 +15,130 @@ resources:
         interval: 1000
 services:
     - service:
-        port: 18856
-        name: 'ts-food-service'
+        port: 18886
+        name: 'ts-rebook-service'
         data:
          - type:
-             date: unix_time
-             startStation: pystr
-             endStation: pystr
-             tripId: uuid4
              orderId: uuid4
-             foodType: "1"
-             stationName: pystr
-             storeName: pystr
-             foodName: pystr
-             price: pyint
+             oldTripId: uuid4
+             tripId: uuid4
+             seatType: "1"
+             endPlace: pystr
+             startingTime: unix_time
+             date: unix_time
+        endpoints:
+        - endpoint:
+            method: 'POST'
+            name: '/rebook/payDifference'
+            headers: 
+                 - 'Content-Type: application/json'
+                 - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/rebook/rebook'
+            headers: 
+                - 'Content-Type: application/json'
+                - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+            target_throughput: 300
+            target_latency: 0.5
+
+    - service:
+        port: 12344
+        name: 'ts-register-service'
+        data:
+         - type:
+            password: pystr
+            gender: pyint
+            name: pystr
+            documentType: pyint
+            documentNum: pystr
+            email: email
+            verificationCode: pystr
+        endpoints:
+        - endpoint:
+            method: 'POST'
+            name: '/register'
+            headers: 
+               - 'Cookie: YsbCaptcha=harsha; loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+               - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+    - service:
+        port: 12031
+        name: 'ts-order-service'
         endpoints:
         - endpoint:
             method: 'GET'
-            name: '/food/findAllFoodOrder'
+            name: '/order/findAll'
             target_throughput: 300
             target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/food/getFood'
-            headers: 
-                 - 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/food/createFoodOrder'
-            headers: 
-                 - 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/food/cancelFoodOrder'
-            headers: 
-                 - 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/food/updateFoodOrder'
-            headers: 
-                 - 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
-        - endpoint:
-            method: 'POST'
-            name: '/food/findFoodOrderByOrderId'
-            headers: 
-                 - 'Content-Type: application/json'
-            target_throughput: 300
-            target_latency: 0.5
+    - service:
+            port: 12032
+            name: 'ts-order-other-service'
+            endpoints:
+            - endpoint:
+                method: 'GET'
+                name: '/orderOther/findAll'
+                target_throughput: 300
+                target_latency: 0.5
+    - service: 
+           port: 19001
+           name: 'ts-payment-service'
+           data:
+             - type:
+                 orderId: uuid4
+                 price: pystr
+                 userId: uuid4
+                 money: pyint
+           endpoints:
+              - endpoint:
+                    method: 'POST'
+                    name: '/payment/pay'
+                    headers: 
+                       - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5
+              - endpoint:
+                    method: 'POST'
+                    name: '/payment/addMoney'
+                    headers: 
+                      - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5
+              - endpoint:
+                    method: 'GET'
+                    name: '/payment/query'
+                    target_throughput: 300
+                    target_latency: 0.5
+    - service: 
+           port: 14578
+           name: 'ts-route-plan-service'
+           data:
+             - type:
+                     formStationName: "Ji Nan"
+                     toStationName: "Zhen Jiang"
+                     travelDate: unix_time
+           endpoints:
+              - endpoint:
+                    method: 'POST'
+                    name: '/routePlan/cheapestRoute'
+                    headers: 
+                       - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5
+              - endpoint:
+                    method: 'POST'
+                    name: '/routePlan/quickestRoute'
+                    headers: 
+                       - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5
+              - endpoint:
+                    method: 'POST'
+                    name: '/routePlan/minStopStations'
+                    headers: 
+                       - 'Content-Type: application/json'
+                    target_throughput: 300
+                    target_latency: 0.5

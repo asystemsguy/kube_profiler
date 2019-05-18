@@ -49,8 +49,8 @@ class service:
                        return False
                   time.sleep(3)
                   service_up = self.platform.get_instance_count(self,"default")
-                  #if(service_up == 0.0):
-                      #print("number of available instances of "+self.name+" :"+str(service_up))
+                  # if(service_up == 0.0):
+                  #     print("number of available instances of "+self.name+" :"+str(service_up))
 
             sleep_time = 1
             status_code = 0
@@ -62,7 +62,7 @@ class service:
                        if time.time() > time_start+timeout :
                                return False
                        sleep_time = sleep_time+2
-                       #print("service "+self.name+" responding with code "+str(status_code)+" trying again ... after "+str(sleep_time)+" secs")
+                       # print("service "+self.name+" responding with code "+str(status_code)+" trying again ... after "+str(sleep_time)+" secs")
                        time.sleep(sleep_time)
             return True
       def get_sign(self):
@@ -85,7 +85,7 @@ class endpoint:
                   for header in self.headers:
                       loadgen_cmd = loadgen_cmd+" -H '"+header+"'"
 
-              if self.method != "GET":
+              if 'Content-Type: application/json' in self.headers: 
                    loadgen_cmd = loadgen_cmd+" -D fakedata/"+datafilename
 
               loadgen_cmd = loadgen_cmd+" "+self.service.url+self.name 
@@ -93,7 +93,8 @@ class endpoint:
               return loadgen_cmd
 
         def gen_load(self,total_req,con_req,timeout,datafilename):
-              if self.method != "GET":
+              print("in gen_load for endpoint ",self.name)
+              if 'Content-Type: application/json' in self.headers:
                  self.service.generate_fake_data(datafilename)
 
               # wait for the service to come up

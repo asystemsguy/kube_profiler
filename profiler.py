@@ -12,6 +12,7 @@ class profiler:
              self.plat = kube()
 
        def run(self):
+            self.plat.drain_test_machines()
             for service in self.services:
                 service.prepare_for_profiling()
                 for resource in self.resources: 

@@ -15,36 +15,58 @@ resources:
         interval: 1000
 services:
     - service:
-        port: 15681
-        name: 'ts-ticketinfo-service'
+        port: 18856
+        name: 'ts-food-service'
         data:
          - type:
-            name: "Tai Yuan"
-            startingPlace: "Nan Jing"
-            endPlace: "Shang Hai"
-            departureTime: unix_time
-            trip: 
-                tripId:
-                    trainNumber: "G,pystr"
-                trainTypeId: "ZhiDa"
-                startingStationId: pystr
-                stationsId: pystr
-                terminalStationId: pystr
-                startingTime: unix_time
-                endTime: unix_time
-                routeId: "0b23bd3e-876a-4af3-b920-c50a90c90b04"
+             date: unix_time
+             startStation: pystr
+             endStation: pystr
+             tripId: uuid4
+             orderId: uuid4
+             foodType: "1"
+             stationName: pystr
+             storeName: pystr
+             foodName: pystr
+             price: pyint
         endpoints:
         - endpoint:
-            method: 'POST'
-            name: '/ticketinfo/queryForTravel'
-            headers: 
-                - 'Content-Type: application/json'
+            method: 'GET'
+            name: '/food/findAllFoodOrder'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
-            name: '/ticketinfo/queryForStationId'
+            name: '/food/getFood'
             headers: 
-                - 'Content-Type: application/json'
+                 - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/food/createFoodOrder'
+            headers: 
+                 - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/food/cancelFoodOrder'
+            headers: 
+                 - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/food/updateFoodOrder'
+            headers: 
+                 - 'Content-Type: application/json'
+            target_throughput: 300
+            target_latency: 0.5
+        - endpoint:
+            method: 'POST'
+            name: '/food/findFoodOrderByOrderId'
+            headers: 
+                 - 'Content-Type: application/json'
             target_throughput: 300
             target_latency: 0.5

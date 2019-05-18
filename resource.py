@@ -93,13 +93,12 @@ class max_conn_requests(resource):
                  endpoint.max_conn_requests = 1
 
        def profile(self,service,total_req,timeout):
-
+       
               print("# profiling for "+self.__class__.__name__+"\n")
                   
               keys = np.arange(self.min, self.max, self.interval)
 
               print("## service: ",service.name,"\n")
-
               self.platform.restart(service)
               
               # Run profiling for each endpoint

@@ -2,6 +2,7 @@ import yaml
 from plat import kube
 from cluster import service,endpoint,service_data
 from resource import max_conn_requests,cpu,memory
+from analysis import analysis
 
 class profiler:
        def __init__(self):
@@ -17,6 +18,7 @@ class profiler:
                 service.prepare_for_profiling()
                 for resource in self.resources: 
                      resource.profile(service,self.total_req,self.timeout)
+                analysis.getlimits(service,"max_strategy")
 
        def load_config(self,filename):
 

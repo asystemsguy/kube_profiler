@@ -76,8 +76,8 @@ class endpoint:
             self.target_throughput = target_throughput
             self.target_latency = target_latency
             self.max_conn_requests = 0
-            self.cpu_limits = 0
-            self.mem_limits = 0
+            self.cpu_limit = 0
+            self.mem_limit = 0
 
         def get_load_command(self,total_req,con_req,timeout,datafilename):
 
@@ -104,7 +104,6 @@ class endpoint:
                    return util.run_cmd(self.get_load_command(total_req,con_req,timeout,datafilename),timeout)
               else:
                    return ""
-
         def get_sign(self):
               return "_api_"+self.name.replace("/", "_")+"_m_"+self.method
 

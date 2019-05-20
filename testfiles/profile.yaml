@@ -1106,30 +1106,28 @@ services:
         name: 'ts-rebook-service'
         data:
          - type:
-             orderId: pystr
-             oldTripId: pystr
-             tripId: pystr
-             seatType: pystr
+             orderId: uuid4
+             oldTripId: uuid4
+             tripId: uuid4
+             seatType: "1"
              endPlace: pystr
-             startingTime: pystr
-             date: unix_date
+             startingTime: unix_time
+             date: unix_time
         endpoints:
         - endpoint:
             method: 'POST'
             name: '/rebook/payDifference'
-            cookies:
-                    - cookie: 'loginId: pystr'
-                    - cookie: 'loginToken: pystr'
-            header: 'Content-Type: application/json'
+            headers: 
+                 - 'Content-Type: application/json'
+                 - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
             target_throughput: 300
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/rebook/rebook'
-            cookies:
-                    - cookie: 'loginId: pystr'
-                    - cookie: 'loginToken: pystr'
-            header: 'Content-Type: application/json'
+            headers: 
+                - 'Content-Type: application/json'
+                - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
             target_throughput: 300
             target_latency: 0.5
 
@@ -1143,15 +1141,16 @@ services:
             name: pystr
             documentType: pyint
             documentNum: pystr
-            email: pystr
+            email: email
             verificationCode: pystr
         endpoints:
         - endpoint:
             method: 'POST'
             name: '/register'
-            header: 'Content-Type: application/json'
+            headers: 
+               - 'Cookie: YsbCaptcha=harsha; loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+               - 'Content-Type: application/json'
             target_throughput: 300
-            target_latency: 0.5
     - service:
         port: 12031
         name: 'ts-order-service'
@@ -1159,7 +1158,6 @@ services:
         - endpoint:
             method: 'GET'
             name: '/order/findAll'
-            header: ""
             target_throughput: 300
             target_latency: 0.5
     - service:
@@ -1169,7 +1167,6 @@ services:
             - endpoint:
                 method: 'GET'
                 name: '/orderOther/findAll'
-                header: ""
                 target_throughput: 300
                 target_latency: 0.5
     - service: 
@@ -1177,27 +1174,28 @@ services:
            name: 'ts-payment-service'
            data:
              - type:
-                 orderId: pystr
+                 orderId: uuid4
                  price: pystr
-                 userId: pystr
+                 userId: uuid4
                  money: pyint
            endpoints:
               - endpoint:
                     method: 'POST'
                     name: '/payment/pay'
-                    header: 'Content-Type: application/json'
+                    headers: 
+                       - 'Content-Type: application/json'
                     target_throughput: 300
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/payment/addMoney'
-                    header: 'Content-Type: application/json'
+                    headers: 
+                      - 'Content-Type: application/json'
                     target_throughput: 300
                     target_latency: 0.5
               - endpoint:
                     method: 'GET'
                     name: '/payment/query'
-                    header: ""
                     target_throughput: 300
                     target_latency: 0.5
     - service: 
@@ -1205,26 +1203,29 @@ services:
            name: 'ts-route-plan-service'
            data:
              - type:
-                     formStationName: pystr
-                     toStationName: pystr
-                     travelDate: unix_date
+                     formStationName: "Ji Nan"
+                     toStationName: "Zhen Jiang"
+                     travelDate: unix_time
            endpoints:
               - endpoint:
                     method: 'POST'
                     name: '/routePlan/cheapestRoute'
-                    header: 'Content-Type: application/json'
+                    headers: 
+                       - 'Content-Type: application/json'
                     target_throughput: 300
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/routePlan/quickestRoute'
-                    header: 'Content-Type: application/json'
+                    headers: 
+                       - 'Content-Type: application/json'
                     target_throughput: 300
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/routePlan/minStopStations'
-                    header: 'Content-Type: application/json'
+                    headers: 
+                       - 'Content-Type: application/json'
                     target_throughput: 300
                     target_latency: 0.5
     - service: 

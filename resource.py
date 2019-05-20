@@ -79,6 +79,7 @@ class resource:
 class max_conn_requests(resource):
        def __init__(self,min_res,max_res,interval,platform):
              resource.__init__(self,min_res,max_res,interval,platform)
+             self.name = "max_conn_requests"
 
        def do_start(self,endpoint):
             self.platform.allocate_cpu(endpoint.service,2)
@@ -162,7 +163,7 @@ class max_conn_requests(resource):
 class memory(resource):
        def __init__(self,min_res,max_res,interval,platform):
              resource.__init__(self,min_res,max_res,interval,platform)
-
+             self.name = "mem"
        def do_start(self,endpoint):
              self.allocate(endpoint,"16G")
 
@@ -177,7 +178,7 @@ class cpu(resource):
     
        def __init__(self,min_res,max_res,interval,platform):
              resource.__init__(self,min_res,max_res,interval,platform)
-
+             self.name = "cpu"
        def do_start(self,endpoint):
             self.allocate(endpoint,2)
 

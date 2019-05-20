@@ -15,6 +15,7 @@ class service:
           self.endpoints = endpoints
           self.platform = platform
           self.url = 'http://'+self.name+':'+str(self.port)
+          self.limits =  dict()
           for endpoint in endpoints:
             endpoint.service = self
           try:
@@ -65,6 +66,7 @@ class service:
                        # print("service "+self.name+" responding with code "+str(status_code)+" trying again ... after "+str(sleep_time)+" secs")
                        time.sleep(sleep_time)
             return True
+
       def get_sign(self):
              return "sev_"+self.name
                  
@@ -76,8 +78,7 @@ class endpoint:
             self.target_throughput = target_throughput
             self.target_latency = target_latency
             self.max_conn_requests = 0
-            self.cpu_limits = 0
-            self.mem_limits = 0
+            self.limits = dict() 
 
         def get_load_command(self,total_req,con_req,timeout,datafilename):
 

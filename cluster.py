@@ -105,7 +105,6 @@ class endpoint:
                    return util.run_cmd(self.get_load_command(total_req,con_req,timeout,datafilename),timeout)
               else:
                    return ""
-
         def get_sign(self):
               return "_api_"+self.name.replace("/", "_")+"_m_"+self.method
 

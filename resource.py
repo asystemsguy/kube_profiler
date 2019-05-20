@@ -172,6 +172,7 @@ class memory(resource):
 
        def finally_do(self,endpoint,report):
              required_memory = report.get_value_for_target(endpoint.target_throughput,endpoint.target_latency)
+             endpoint.mem_limit = required_memory
 
 
 class cpu(resource):
@@ -187,3 +188,4 @@ class cpu(resource):
 
        def finally_do(self,endpoint,report):
              required_cpu = report.get_value_for_target(endpoint.target_throughput,endpoint.target_latency)
+             endpoint.cpu_limit = required_cpu

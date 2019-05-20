@@ -8,6 +8,12 @@ class Limits_Extraction:
         return self.limits
 
 class analysis:
+       def __init__(self):
+           self.endpoints_cpu = []
+           self.endpoints_mem = []
+           self.limits = dict()
+           self.limits["cpu"] = 0
+           self.limits["mem"] = 0
 
     def __init__(self,resources):
          self.endpoint_resources =  dict()
@@ -28,5 +34,4 @@ class analysis:
         for service in services:
 
 
-             
 

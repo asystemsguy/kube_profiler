@@ -11,6 +11,7 @@ class profiler:
              self.total_req = 0
              self.timeout = 100000
              self.plat = kube()
+             self.analysis = analysis()
 
        def run(self):
             self.plat.drain_test_machines()
@@ -18,7 +19,7 @@ class profiler:
                 service.prepare_for_profiling()
                 for resource in self.resources: 
                      resource.profile(service,self.total_req,self.timeout)
-                analysis.getlimits(service,"max_strategy")
+                print(self.analysis.get_limits(service,"max_strategy"))
 
        def load_config(self,filename):
 
@@ -38,12 +39,12 @@ class profiler:
                     min_value = config['resources']['cpu']['min']
                     max_value = config['resources']['cpu']['max']
                     interval_value = config['resources']['cpu']['interval']
-                    # self.resources.append(cpu(min_value,max_value,interval_value,self.plat))
+                    self.resources.append(cpu(min_value,max_value,interval_value,self.plat))
                     
                     min_value = config['resources']['mem']['min']
                     max_value = config['resources']['mem']['max']
                     interval_value = config['resources']['mem']['interval']
-                    # self.resources.append(memory(min_value,max_value,interval_value,self.plat))
+                    self.resources.append(memory(min_value,max_value,interval_value,self.plat))
 
                   
                     for service_conf in config['services']:

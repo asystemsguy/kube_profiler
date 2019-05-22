@@ -16,8 +16,8 @@ class service:
           self.platform = platform
           self.url = 'http://'+self.name+':'+str(self.port)
           self.limits =  dict()
-          for endpoint in endpoints:
-            endpoint.service = self
+#          for endpoint in endpoints:
+ #           endpoint.service = self
           try:
             shutil.rmtree("fakedata")
             os.mkdir("fakedata")

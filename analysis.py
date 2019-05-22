@@ -51,6 +51,6 @@ class analysis:
              if total_cost_dollers < total_cost_dollers_least:
                  total_cost_dollers_least = total_cost_dollers
                  least_cost_vm_type = vm_type
-        return vm_type
+        return least_cost_vm_type
 
 

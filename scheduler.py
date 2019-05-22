@@ -1,4 +1,3 @@
-from rectpack import newPacker
 from cluster import service
 from analysis import vm_type
 
@@ -8,34 +7,39 @@ class machine:
          self.resources = resources
          self.services = list()
 
-    def add_service(service):
-         if self.alloc_resource("cpu",service.limits["cpu"]) != True
+    def add_service(self,service):
+         if self.alloc_resource("cpu",service.limits["cpu"]) != True:
                return False
-         if self.alloc_resource("mem",service.limits["mem"]) != True
+         if self.alloc_resource("mem",service.limits["mem"]) != True:
                return False
          self.services.append(service)
          return True
-
     def alloc_resource(self,type_res,value):
         if self.resources[type_res] <= value:
               return False
         else:
             self.resources[type_res] = self.resources[type_res]-value
             return True
+    def print_services(self):
+        for service in self.services:
+              print(service.name)
 class cluster:
     def __init__(self,vm_type):
          self.machine_resources = dict()
-         self.machine_resources["cpu"] = vm_type.limits["cpu"]
-         self.machine_resources["mem"] = vm_type.limits["mem"]
+         self.machine_resources = vm_type.limits.copy()
          self.node_list = list()
-         self.node_list[-1] = machine(self.machine_resources)
-    def add_service(service):
-         if self.node_list[-1].add_service(service) != True:
-              self.node_list.append(machine(self.machine_resources))
-              self.node_list[-1].add_service(service)
+         self.current_machine = machine(self.machine_resources.copy())
+         self.node_list.append(self.current_machine)
+    def add_service(self,service):
+         if self.current_machine.add_service(service) != True:
+              self.current_machine = machine(self.machine_resources.copy())
+              self.node_list.append(self.current_machine)
+              if self.current_machine.add_service(service) != True:
+                  print("scheduling ",service.name," not possable as it needs more resources than vm_type")
+    def schedule(self,services):
+         for service in services:
+              self.add_service(service)
+         for machine in self.node_list:
+              machine.print_services()
 
-cluster_kube = cluster()
-def schedule(services,vm_type):
-     for service in services:
-          cluster_kube.add_service(service)
 

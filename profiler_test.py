@@ -2,7 +2,7 @@ import unittest
 from profiler import profiler
 
 class profiler_test(unittest.TestCase):
-	def setUp(self):
+    def setUp(self):
 		self.prof = profiler()
     def test_success_case(self):
         filename = "test.txt"

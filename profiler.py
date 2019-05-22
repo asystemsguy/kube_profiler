@@ -2,8 +2,8 @@ import yaml
 from plat import kube
 from cluster import service,endpoint,service_data
 from resource import max_conn_requests,cpu,memory
-from analysis import analysis
-
+from analysis import *
+from scheduler import * 
 class profiler:
        def __init__(self):
              self.services = []
@@ -12,6 +12,10 @@ class profiler:
              self.timeout = 100000
              self.plat = kube()
              self.analysis = analysis()
+             self.vm_types = list()
+             self.vm_types.append(vm_type(200,330,30)) 
+             self.vm_types.append(vm_type(200,330,30))
+             self.vm_types.append(vm_type(200,330,30))
 
        def run(self):
             self.plat.drain_test_machines()
@@ -20,6 +24,8 @@ class profiler:
                 for resource in self.resources: 
                      resource.profile(service,self.total_req,self.timeout)
                 print(self.analysis.get_limits(service,"max_strategy"))
+            vm_type = self.analysis.get_vm_type(self.services,self.vm_types)
+            cluster(vm_type).schedule(self.services)
 
        def load_config(self,filename):
 

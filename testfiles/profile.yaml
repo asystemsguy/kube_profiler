@@ -14,87 +14,87 @@ resources:
         min: 1000
         interval: 1000
 services:
-      - service:
-            port: 12346
-            name: 'ts-travel-service'
-            data:
-               - type:
-                  tripId : "G,pystr"
-                  trainTypeId : pystr
-                  routeId: pystr
-                  startingStationId: pystr
-                  stationsId: pystr
-                  terminalStationId: pystr
-                  startingTime: unix_time
-                  endTime: unix_time
-                  startingPlace: "Shang Hai Hong Qiao"
-                  endPlace: "Shi Jia Zhuang"
-                  departureTime: unix_time
-                  travelDate: unix_time
-                  from: pystr
-                  to: pystr
-            endpoints:
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/getTripsByRouteId'
-                 headers: 
-                    - 'Content-Type: application/json'
-                 target_throughput: 10
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/create'
-                 headers: 
-                    - 'Content-Type: application/json'
-                 target_throughput: 10
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/retrieve'
-                 headers: 
-                    - 'Content-Type: application/json'
-                 target_throughput: 10
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/update'
-                 headers: 
-                    - 'Content-Type: application/json'
-                 target_throughput: 10
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/delete'
-                 headers: 
-                    - 'Content-Type: application/json'
-                 target_throughput: 10
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/query'
-                 headers: 
-                    - 'Content-Type: application/json'
-                 target_throughput: 10
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/queryWithPackage'
-                 headers: 
-                    - 'Content-Type: application/json'
-                 target_throughput: 10
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'POST'
-                 name: '/travel/getTripAllDetailInfo'
-                 headers: 
-                    - 'Content-Type: application/json'
-                 target_throughput: 10
-                 target_latency: 0.5
-            - endpoint:
-                 method: 'GET'
-                 name: '/travel/queryAll'
-                 target_throughput: 10
-                 target_latency: 0.5
+    - service:
+        port: 12346
+        name: 'ts-travel-service'
+        data:
+           - type:
+              tripId : "G,pystr"
+              trainTypeId : pystr
+              routeId: pystr
+              startingStationId: pystr
+              stationsId: pystr
+              terminalStationId: pystr
+              startingTime: unix_time
+              endTime: unix_time
+              startingPlace: "Shang Hai Hong Qiao"
+              endPlace: "Shi Jia Zhuang"
+              departureTime: unix_time
+              travelDate: unix_time
+              from: pystr
+              to: pystr
+        endpoints:
+        - endpoint:
+             method: 'POST'
+             name: '/travel/getTripsByRouteId'
+             headers: 
+                - 'Content-Type: application/json'
+             target_throughput: 10
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/travel/create'
+             headers: 
+                - 'Content-Type: application/json'
+             target_throughput: 10
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/travel/retrieve'
+             headers: 
+                - 'Content-Type: application/json'
+             target_throughput: 10
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/travel/update'
+             headers: 
+                - 'Content-Type: application/json'
+             target_throughput: 10
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/travel/delete'
+             headers: 
+                - 'Content-Type: application/json'
+             target_throughput: 10
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/travel/query'
+             headers: 
+                - 'Content-Type: application/json'
+             target_throughput: 10
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/travel/queryWithPackage'
+             headers: 
+                - 'Content-Type: application/json'
+             target_throughput: 10
+             target_latency: 0.5
+        - endpoint:
+             method: 'POST'
+             name: '/travel/getTripAllDetailInfo'
+             headers: 
+                - 'Content-Type: application/json'
+             target_throughput: 10
+             target_latency: 0.5
+        - endpoint:
+             method: 'GET'
+             name: '/travel/queryAll'
+             target_throughput: 10
+             target_latency: 0.5
     - service:
         port: 14567
         name: 'ts-train-service'
@@ -400,10 +400,10 @@ services:
                     - 'Content-Type: application/json'
                 target_throughput: 10
                 target_latency: 0.5 
-     - service:
-          port: 12347
-          name: 'ts-contacts-service'
-          data:
+    - service:
+         port: 12347
+         name: 'ts-contacts-service'
+         data:
           - type:
              contactsId : uuid4
              name : pystr
@@ -411,7 +411,7 @@ services:
              documentNumber : pyint
              phoneNumber : pystr
              loginToken : pystr
-          endpoints:
+         endpoints:
             - endpoint:
                 method: 'POST'
                 name: '/contacts/admincreate'

@@ -355,10 +355,10 @@ services:
          port: 15679
          name: 'ts-config-service'
          data:
-            - type:
-                name: pystr
-                value: pystr
-                description: pystr
+          - type:
+              name: pystr
+              value: pystr
+              description: pystr
          endpoints:
             - endpoint:
                 method: 'POST'

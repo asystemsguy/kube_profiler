@@ -21,13 +21,14 @@ class analysis:
     def __init__(self):
          self.Limits_Extraction = Limits_Extraction()
 
-    def get_limits(self,service,resources,strategy):
+    def get_limits(self,service,strategy):
         resources_dict =  dict()
         resources_dict["cpu"] = list()
         resources_dict["mem"] = list()
         for endpoint in service.endpoints:
-               resources_dict["cpu"].append(endpoint.cpu_limits)
-               resources_dict["mem"].append(endpoint.mem_limits)
+            if "cpu" in endpoint.limits and "mem" in endpoint.limits:
+               resources_dict["cpu"].append(endpoint.limits["cpu"])
+               resources_dict["mem"].append(endpoint.limits["mem"])
         service.limits =  getattr(self.Limits_Extraction,strategy)(resources_dict)
         return service.limits
 
@@ -44,13 +45,14 @@ class analysis:
 
         # Find least costly VM type
         total_cost_dollers = 0
+        least_cost_vm_type = vm_types[0]
         total_cost_dollers_least = 0
-        for vm_type in vm_types:
-             total_cost_dollers = total_resources["cpu"]*vm_type.costs["cpu"]
-             total_cost_dollers = total_cost_dollers+total_resources["mem"]*vm_type.costs["mem"]
+        for vm_type_t in vm_types:
+             total_cost_dollers = total_resources["cpu"]*vm_type_t.costs["cpu"]
+             total_cost_dollers = total_cost_dollers+total_resources["mem"]*vm_type_t.costs["mem"]
              if total_cost_dollers < total_cost_dollers_least:
                  total_cost_dollers_least = total_cost_dollers
-                 least_cost_vm_type = vm_type
+                 least_cost_vm_type = vm_type_t
         return least_cost_vm_type
 
 

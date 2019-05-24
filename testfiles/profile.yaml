@@ -14,7 +14,7 @@ resources:
         min: 1000
         interval: 1000
 services:
-    - service:
+      - service:
             port: 12346
             name: 'ts-travel-service'
             data:
@@ -39,61 +39,61 @@ services:
                  name: '/travel/getTripsByRouteId'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/create'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/retrieve'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/update'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/delete'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/query'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/queryWithPackage'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/travel/getTripAllDetailInfo'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'GET'
                  name: '/travel/queryAll'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
     - service:
         port: 14567
@@ -110,33 +110,33 @@ services:
              name: '/train/create'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/train/retrieve'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'GET'
              name: '/train/query'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5 
         - endpoint:
              method: 'POST'
              name: '/train/update'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/train/delete'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
     - service:
             port: 12345
@@ -152,33 +152,33 @@ services:
                  name: '/station/create'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/station/exist'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'GET'
                  name: '/station/query'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5   
             - endpoint:
                  method: 'POST'
                  name: '/station/update'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/station/delete'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
     - service:
             port: 11188
@@ -195,35 +195,35 @@ services:
             - endpoint:
                 method: 'GET'
                 name: '/securityConfig/findAll'
-                target_throughput: 300
+                target_throughput: 10
                 target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/securityConfig/create'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/securityConfig/check'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/securityConfig/update'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
             - endpoint:
                  method: 'POST'
                  name: '/securityConfig/delete'
                  headers: 
                     - 'Content-Type: application/json'
-                 target_throughput: 300
+                 target_throughput: 10
                  target_latency: 0.5
     - service:
         port: 16579
@@ -242,33 +242,33 @@ services:
             name: '/price/create'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
             name: '/price/queryAll'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/price/update'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/price/query'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/price/delete'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5 
     - service:
         port: 16346
@@ -295,61 +295,61 @@ services:
              name: '/travel2/getTripsByRouteId'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/travel2/create'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/travel2/retrieve'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/travel2/update'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/travel2/delete'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/travel2/query'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/travel2/queryWithPackage'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'POST'
              name: '/travel2/getTripAllDetailInfo'
              headers: 
                 - 'Content-Type: application/json'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5
         - endpoint:
              method: 'GET'
              name: '/travel2/queryAll'
-             target_throughput: 300
+             target_throughput: 10
              target_latency: 0.5    
     - service:
          port: 15679
@@ -365,102 +365,102 @@ services:
                 name: '/config/create'
                 headers: 
                     - 'Content-Type: application/json'
-                target_throughput: 300
+                target_throughput: 10
                 target_latency: 0.5
             - endpoint:
                 method: 'POST'
                 name: '/config/query'
                 headers: 
                     - 'Content-Type: application/json'
-                target_throughput: 300
+                target_throughput: 10
                 target_latency: 0.5 
             - endpoint:
                 method: 'GET'
                 name: '/config/queryAll'
-                target_throughput: 300
+                target_throughput: 10
                 target_latency: 0.5
             - endpoint:
                 method: 'POST'
                 name: '/config/retrieve'
                 headers: 
                     - 'Content-Type: application/json'
-                target_throughput: 300
+                target_throughput: 10
                 target_latency: 0.5
             - endpoint:
                 method: 'POST'
                 name: '/config/update'
                 headers: 
                     - 'Content-Type: application/json'
-                target_throughput: 300
+                target_throughput: 10
                 target_latency: 0.5 
             - endpoint:
                 method: 'POST'
                 name: '/config/delete'
                 headers: 
                     - 'Content-Type: application/json'
-                target_throughput: 300
+                target_throughput: 10
                 target_latency: 0.5 
-    - service:
-                port: 12347
-                name: 'ts-contacts-service'
-                data:
-                - type:
-                    contactsId : uuid4
-                    name : pystr
-                    documentType : pyint
-                    documentNumber : pyint
-                    phoneNumber : pystr
-                    loginToken : pystr
-                endpoints:
-                - endpoint:
-                    method: 'POST'
-                    name: '/contacts/admincreate'
-                    headers: 
-                        - 'Content-Type: application/json'
-                    target_throughput: 300
-                    target_latency: 0.5 
-                - endpoint:
-                     method: 'GET'
-                     name: '/contacts/findAll'
-                     target_throughput: 300
-                     target_latency: 0.5
-                - endpoint:
-                    method: 'GET'
-                    name: '/contacts/findContacts'
-                    headers: 
-                        - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
-                        - 'Content-Type: application/json'
-                    target_throughput: 300
-                    target_latency: 0.5 
-                - endpoint:
-                    method: 'POST'
-                    name: '/contacts/getContactsById'
-                    headers: 
-                        - 'Content-Type: application/json'
-                    target_throughput: 300
-                    target_latency: 0.5 
-                - endpoint:
-                    method: 'POST'
-                    name: '/contacts/deleteContacts'
-                    headers: 
-                        - 'Content-Type: application/json'
-                    target_throughput: 300
-                    target_latency: 0.5 
-                - endpoint:
-                    method: 'POST'
-                    name: '/contacts/create'
-                    headers: 
-                        - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
-                        - 'Content-Type: application/json'
-                    target_throughput: 300
-                    target_latency: 0.5 
-                 - endpoint:
-                     method: 'POST'
-                     name: '/contacts/modifyContacts'
-                     headers: 
-                         - 'Content-Type: application/json'
-                     target_throughput: 300
-                     target_latency: 0.5 
+     - service:
+          port: 12347
+          name: 'ts-contacts-service'
+          data:
+          - type:
+             contactsId : uuid4
+             name : pystr
+             documentType : pyint
+             documentNumber : pyint
+             phoneNumber : pystr
+             loginToken : pystr
+          endpoints:
+            - endpoint:
+                method: 'POST'
+                name: '/contacts/admincreate'
+                headers: 
+                    - 'Content-Type: application/json'
+                target_throughput: 10
+                target_latency: 0.5 
+            - endpoint:
+                 method: 'GET'
+                 name: '/contacts/findAll'
+                 target_throughput: 10
+                 target_latency: 0.5
+            - endpoint:
+                method: 'GET'
+                name: '/contacts/findContacts'
+                headers: 
+                    - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+                    - 'Content-Type: application/json'
+                target_throughput: 10
+                target_latency: 0.5 
+            - endpoint:
+                method: 'POST'
+                name: '/contacts/getContactsById'
+                headers: 
+                    - 'Content-Type: application/json'
+                target_throughput: 10
+                target_latency: 0.5 
+            - endpoint:
+                method: 'POST'
+                name: '/contacts/deleteContacts'
+                headers: 
+                    - 'Content-Type: application/json'
+                target_throughput: 10
+                target_latency: 0.5 
+            - endpoint:
+                method: 'POST'
+                name: '/contacts/create'
+                headers: 
+                    - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
+                    - 'Content-Type: application/json'
+                target_throughput: 10
+                target_latency: 0.5 
+             - endpoint:
+                 method: 'POST'
+                 name: '/contacts/modifyContacts'
+                 headers: 
+                     - 'Content-Type: application/json'
+                 target_throughput: 10
+                 target_latency: 0.5 
     - service:
         port: 12349
         name: 'ts-sso-service'
@@ -489,61 +489,61 @@ services:
         - endpoint:
             method: 'GET'
             name: '/account/findAll'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
             name: '/account/findAllLogin'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/account/modify'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/account/register'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/account/login'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/logout'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/account/findById'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/account/adminlogin'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/account/admindelete'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
 
     - service:
@@ -565,28 +565,28 @@ services:
         #     name: '/travelPlan/getTransferResult'
         #     headers: 
         #        - 'Content-Type: application/json'
-        #     target_throughput: 300
+        #     target_throughput: 10
         #     target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/travelPlan/getCheapest'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/travelPlan/getQuickest'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/travelPlan/getMinStation'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 15681
@@ -613,14 +613,14 @@ services:
             name: '/ticketinfo/queryForTravel'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/ticketinfo/queryForStationId'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 18888
@@ -635,26 +635,26 @@ services:
         - endpoint:
             method: 'GET'
             name: '/assurance/findAll'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
             name: '/assurance/getAllAssuranceType'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/assurance/create'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/assurance/modifyAssurance'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
@@ -662,14 +662,14 @@ services:
             headers: 
                 - 'Content-Type: application/json'
                 - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
             name: '/assurance/findAssuranceByOrderId'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 15680
@@ -696,14 +696,14 @@ services:
             name: '/basic/queryForTravel'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/basic/queryForStationId'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 18885
@@ -717,7 +717,7 @@ services:
             name: '/cancelCalculateRefund'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
@@ -725,7 +725,7 @@ services:
             headers: 
                 - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 16110
@@ -744,26 +744,26 @@ services:
         - endpoint:
             method: 'GET'
             name: '/consignPrice/getPriceInfo'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
             name: '/consignPrice/getPriceConfig'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/consignPrice/getPrice'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/consignPrice/modifyPriceConfig'
             headers: 
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 16111
@@ -786,14 +786,14 @@ services:
             name: '/consign/insertConsign'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/consign/updateConsign'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 12386
@@ -807,14 +807,14 @@ services:
             name: '/execute/execute'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/execute/collected'
             headers: 
               - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 18855
@@ -827,26 +827,26 @@ services:
         - endpoint:
             method: 'GET'
             name: '/foodmap/getAllFoodStores'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
             name: '/foodmap/getAllTrainFood'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/foodmap/getFoodStoresOfStation'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/foodmap/getTrainFoodOfTrip'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
 
     - service:
@@ -863,17 +863,17 @@ services:
         - endpoint:
             method: 'GET'
             name: '/inside_payment/queryPayment'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
             name: '/inside_payment/queryAccount'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'GET'
             name: '/inside_payment/queryAddMoney'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
@@ -881,35 +881,35 @@ services:
             headers: 
                 - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/inside_payment/createAccount'
             headers: 
               - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/inside_payment/addMoney'
             headers: 
               - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/inside_payment/drawBack'
             headers: 
               - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/inside_payment/payDifference'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 18856
@@ -930,42 +930,42 @@ services:
         - endpoint:
             method: 'GET'
             name: '/food/findAllFoodOrder'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/food/getFood'
             headers: 
                  - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/food/createFoodOrder'
             headers: 
                  - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/food/cancelFoodOrder'
             headers: 
                  - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/food/updateFoodOrder'
             headers: 
                  - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/food/findFoodOrderByOrderId'
             headers: 
                  - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
 
     - service:
@@ -985,14 +985,14 @@ services:
             headers: 
               - 'Cookie: YsbCaptcha=harsha'
               - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/logout'
             headers: 
               - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 17853
@@ -1015,28 +1015,28 @@ services:
             name: '/notification/preserve_success'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/notification/order_create_success'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/notification/order_changed_success'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
             name: '/notification/order_cancel_success'
             headers: 
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
 
     - service:
@@ -1068,7 +1068,7 @@ services:
             headers: 
                - 'Content-Type: application/json'
                - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 14569
@@ -1099,7 +1099,7 @@ services:
             headers: 
                 - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
                 - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
         port: 18886
@@ -1120,7 +1120,7 @@ services:
             headers: 
                  - 'Content-Type: application/json'
                  - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
         - endpoint:
             method: 'POST'
@@ -1128,7 +1128,7 @@ services:
             headers: 
                 - 'Content-Type: application/json'
                 - 'Cookie: loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
 
     - service:
@@ -1150,7 +1150,7 @@ services:
             headers: 
                - 'Cookie: YsbCaptcha=harsha; loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
                - 'Content-Type: application/json'
-            target_throughput: 300
+            target_throughput: 10
     - service:
         port: 12031
         name: 'ts-order-service'
@@ -1158,7 +1158,7 @@ services:
         - endpoint:
             method: 'GET'
             name: '/order/findAll'
-            target_throughput: 300
+            target_throughput: 10
             target_latency: 0.5
     - service:
             port: 12032
@@ -1167,7 +1167,7 @@ services:
             - endpoint:
                 method: 'GET'
                 name: '/orderOther/findAll'
-                target_throughput: 300
+                target_throughput: 10
                 target_latency: 0.5
     - service: 
            port: 19001
@@ -1184,19 +1184,19 @@ services:
                     name: '/payment/pay'
                     headers: 
                        - 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/payment/addMoney'
                     headers: 
                       - 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
               - endpoint:
                     method: 'GET'
                     name: '/payment/query'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
     - service: 
            port: 14578
@@ -1212,21 +1212,21 @@ services:
                     name: '/routePlan/cheapestRoute'
                     headers: 
                        - 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/routePlan/quickestRoute'
                     headers: 
                        - 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/routePlan/minStopStations'
                     headers: 
                        - 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
     - service: 
            port: 11178
@@ -1246,25 +1246,25 @@ services:
                     method: 'POST'
                     name: '/route/createAndModify'
                     header: 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
               - endpoint:
                     method: 'GET'
                     name: '/route/queryAll'
                     header: ""
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/route/queryByStartAndTerminal'
                     header: 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/route/delete'
                     header: 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
     - service: 
            port: 18898
@@ -1281,11 +1281,11 @@ services:
                     method: 'POST'
                     name: '/seat/getSeat'
                     header: 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5
               - endpoint:
                     method: 'POST'
                     name: '/seat/getLeftTicketOfInterval'
                     header: 'Content-Type: application/json'
-                    target_throughput: 300
+                    target_throughput: 10
                     target_latency: 0.5

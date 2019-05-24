@@ -79,7 +79,6 @@ class resource:
 class max_conn_requests(resource):
        def __init__(self,min_res,max_res,interval,platform):
              resource.__init__(self,min_res,max_res,interval,platform)
-             self.name = "max_conn_requests"
 
        def do_start(self,endpoint):
             self.platform.allocate_cpu(endpoint.service,2)
@@ -92,6 +91,7 @@ class max_conn_requests(resource):
              endpoint.max_conn_requests = report.get_maxthroughput()
              if endpoint.max_conn_requests < 1:
                  endpoint.max_conn_requests = 1
+
 
        def profile(self,service,total_req,timeout):
        
@@ -172,7 +172,7 @@ class memory(resource):
 
        def finally_do(self,endpoint,report):
              required_memory = report.get_value_for_target(endpoint.target_throughput,endpoint.target_latency)
-             endpoint.mem_limit = required_memory
+             endpoint.limits["mem"] = required_memory
 
 
 class cpu(resource):
@@ -187,5 +187,4 @@ class cpu(resource):
              self.platform.allocate_cpu(endpoint.service,value)
 
        def finally_do(self,endpoint,report):
-             required_cpu = report.get_value_for_target(endpoint.target_throughput,endpoint.target_latency)
-             endpoint.cpu_limit = required_cpu
+             endpoint.limits["cpu"] = report.get_value_for_target(endpoint.target_throughput,endpoint.target_latency)

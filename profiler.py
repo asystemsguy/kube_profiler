@@ -13,9 +13,9 @@ class profiler:
              self.plat = kube()
              self.analysis = analysis()
              self.vm_types = list()
-             self.vm_types.append(vm_type(200,330,30)) 
-             self.vm_types.append(vm_type(200,330,30))
-             self.vm_types.append(vm_type(200,330,30))
+             self.vm_types.append(vm_type(2,16000,30)) 
+             self.vm_types.append(vm_type(4,16000,60))
+             self.vm_types.append(vm_type(4,32000,80))
 
        def run(self):
             self.plat.drain_test_machines()

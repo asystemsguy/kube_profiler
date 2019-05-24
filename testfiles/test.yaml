@@ -14,3 +14,26 @@ resources:
         min: 1000
         interval: 1000
 services:
+    - service: 
+           port: 14578
+           name: 'ts-route-plan-service'
+           data:
+             - type:
+                     formStationName: "Ji Nan"
+                     toStationName: "Zhen Jiang"
+                     travelDate: unix_time
+           endpoints:
+              - endpoint:
+                    method: 'POST'
+                    name: '/routePlan/cheapestRoute'
+                    headers: 
+                       - 'Content-Type: application/json'
+                    target_throughput: 5
+                    target_latency: 0.5
+              - endpoint:
+                    method: 'POST'
+                    name: '/routePlan/quickestRoute'
+                    headers: 
+                       - 'Content-Type: application/json'
+                    target_throughput: 5
+                    target_latency: 0.5

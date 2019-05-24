@@ -1151,6 +1151,7 @@ services:
                - 'Cookie: YsbCaptcha=harsha; loginId=123e4567-e89b-12d3-a456-426655440000; loginToken=123e4567-e89b-12d3-a456-426655440000;'
                - 'Content-Type: application/json'
             target_throughput: 10
+            target_latency: 0.5
     - service:
         port: 12031
         name: 'ts-order-service'
